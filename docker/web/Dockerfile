@@ -1,32 +1,30 @@
-FROM node:18-alpine AS deps
+FROM node:20-slim AS deps
 
 WORKDIR /app
 
-# Copy workspace and app package files
-COPY package*.json ./
-COPY apps/web/package*.json ./apps/web/
+# Copy app package files
+COPY apps/web/package*.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Builder stage
-FROM node:18-alpine AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
-COPY apps/web ./apps/web
+COPY --from=deps /app/package*.json ./
+COPY apps/web ./
 
 # Set environment variable for build
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # Build Next.js application
-WORKDIR /app/apps/web
 RUN npm run build
 
 # Production stage
-FROM node:18-alpine AS runner
+FROM node:20-slim AS runner
 
 WORKDIR /app
 
@@ -34,9 +32,9 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # Copy necessary files
-COPY --from=builder /app/apps/web/public ./public
-COPY --from=builder /app/apps/web/.next/standalone ./
-COPY --from=builder /app/apps/web/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 # Expose port
 EXPOSE 3000

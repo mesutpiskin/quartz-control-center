@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useConnection } from '@/hooks/useConnectionProfiles';
+import { useConnectionProfiles } from '@/hooks/useConnectionProfiles';
 import { apiClient, withConnection } from '@/lib/api/client';
 import { Activity, Server, RefreshCw, BarChart } from 'lucide-react';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useConnection } from '@/hooks/useConnectionProfiles';
+import { useConnectionProfiles } from '@/hooks/useConnectionProfiles';
 import { apiClient, withConnection } from '@/lib/api/client';
 import { Briefcase, Play, Pause, Trash2, RefreshCw, Search } from 'lucide-react';
 
