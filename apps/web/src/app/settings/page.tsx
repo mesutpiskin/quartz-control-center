@@ -245,6 +245,18 @@ export default function SettingsPage() {
                     <p className="text-gray-600 dark:text-gray-400">
                         Manage your Quartz database connections
                     </p>
+                    <div className="mt-2 flex items-center space-x-2">
+                        <span className="text-sm text-gray-500 dark:text-gray-400">Supported:</span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            PostgreSQL
+                        </span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            SQL Server
+                        </span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                            MySQL
+                        </span>
+                    </div>
                 </div>
 
                 <div className="flex space-x-3">
@@ -293,8 +305,8 @@ export default function SettingsPage() {
                             <div
                                 key={profile.id}
                                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${activeProfile?.id === profile.id
-                                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
-                                        : 'border-gray-200 dark:border-gray-700 hover:border-indigo-300'
+                                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
+                                    : 'border-gray-200 dark:border-gray-700 hover:border-indigo-300'
                                     }`}
                                 onClick={() => handleProfileSelect(profile.id)}
                             >
@@ -383,6 +395,22 @@ export default function SettingsPage() {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Database Type
+                        </label>
+                        <select
+                            name="databaseType"
+                            value={formData.databaseType}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                        >
+                            <option value="postgresql">PostgreSQL</option>
+                            <option value="sqlserver">SQL Server</option>
+                            <option value="mysql">MySQL</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Database
                         </label>
                         <input
@@ -455,8 +483,8 @@ export default function SettingsPage() {
 
                 {testResult && (
                     <div className={`mb-6 p-4 rounded-lg flex items-start space-x-3 ${testResult.success
-                            ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
-                            : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
+                        ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
+                        : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
                         }`}>
                         {testResult.success ? (
                             <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
@@ -464,8 +492,8 @@ export default function SettingsPage() {
                             <XCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                         )}
                         <p className={`text-sm ${testResult.success
-                                ? 'text-green-800 dark:text-green-200'
-                                : 'text-red-800 dark:text-red-200'
+                            ? 'text-green-800 dark:text-green-200'
+                            : 'text-red-800 dark:text-red-200'
                             }`}>
                             {testResult.message}
                         </p>

@@ -33,7 +33,7 @@ export class SchemaService {
     `;
 
         const result = await pool.query(query);
-        return result.rows.map(row => row.schema_name);
+        return result.rows.map((row: any) => row.schema_name);
     }
 
     /**
@@ -51,7 +51,7 @@ export class SchemaService {
     `;
 
         const result = await pool.query(query, [schemaName]);
-        return result.rows.map(row => row.table_name);
+        return result.rows.map((row: any) => row.table_name);
     }
 
     /**

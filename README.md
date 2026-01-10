@@ -10,8 +10,7 @@
 
 Connect to your existing Quartz databases and manage jobs, triggers, and monitor execution in real-time.
 
-[Quick Start](#-quick-start) • [Docker](#-docker) • [Features](#-features) • [Roadmap](#-roadmap)
-
+[Quick Start](#-quick-start) • [Docker](#-docker) • [Features](#-features)
 </div>
 
 ---
@@ -139,49 +138,6 @@ quartz-control-center/
 │   └── architecture.md  # Architecture details
 └── scripts/             # Build scripts
 ```
-
-## 🗺️ Roadmap
-
-### Version 1.x (Current)
-- [x] PostgreSQL support
-- [x] Multi-database profile management
-- [x] Job and trigger management
-- [x] Real-time monitoring
-- [x] Docker support
-- [x] **Desktop Application (Electron)**
-  - [x] macOS (.dmg)
-  - [x] Windows (.exe)
-  - [x] Linux (AppImage, .deb, .rpm)
-
-### Version 2.0
-- [ ] **Database Support**
-  - [ ] MySQL support
-  - [ ] SQL Server support
-- [ ] **Job Operations**
-  - [ ] Create new jobs
-  - [ ] Edit job properties
-  - [ ] Manual job triggering
-- [ ] **UI Enhancements**
-  - [ ] Visual cron builder
-  - [ ] Job execution history
-  - [ ] Charts and graphs
-
-### Version 3.0
-- [ ] **Security**
-  - [ ] User authentication
-  - [ ] Role-based access control (RBAC)
-  - [ ] Encrypted credential storage
-- [ ] **Advanced Features**
-  - [ ] Job templates
-  - [ ] Bulk operations
-  - [ ] Webhook notifications
-  - [ ] Audit logging
-
-### Future Considerations
-- [ ] Grafana/Prometheus integration
-- [ ] Multi-language support (i18n)
-- [ ] Mobile app
-- [ ] Cloud-hosted version
 
 ## 📖 Documentation
 

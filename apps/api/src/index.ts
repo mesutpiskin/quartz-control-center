@@ -42,6 +42,7 @@ app.get('/', (_req, res) => {
     res.json({
         name: 'Quartz Control Center API',
         version: '1.0.0',
+        supportedDatabases: ['PostgreSQL', 'SQL Server', 'MySQL'],
         endpoints: {
             database: '/api/database',
             jobs: '/api/jobs',
@@ -73,6 +74,7 @@ app.listen(PORT, () => {
     console.log(`🚀 Quartz Control Center API running on port ${PORT}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔗 CORS enabled for: ${process.env.CORS_ORIGIN || 'http://localhost:3000'}`);
+    console.log(`💾 Supported databases: PostgreSQL, SQL Server, MySQL`);
 });
 
 export default app;

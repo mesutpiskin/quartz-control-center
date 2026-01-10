@@ -9,7 +9,8 @@ import {
     Play,
     Settings,
     Database,
-    Activity
+    Activity,
+    Github
 } from 'lucide-react';
 
 const navigation = [
@@ -60,10 +61,16 @@ export function Sidebar() {
                             );
                         })}
                     </nav>
-                    <div className="flex-shrink-0 px-4 py-4 border-t border-indigo-700">
-                        <p className="text-xs text-indigo-300">
-                            v1.0.0 • PostgreSQL
-                        </p>
+                    <div className="flex-shrink-0 px-4 py-4 border-t border-indigo-700 space-y-2">
+                        <a
+                            href="https://github.com/mesutpiskin/quartz-control-center"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-xs text-indigo-300 hover:text-white transition-colors"
+                        >
+                            <Github className="h-4 w-4 mr-2" />
+                            <span>View on GitHub</span>
+                        </a>
                     </div>
                 </div>
             </div>

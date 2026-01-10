@@ -29,6 +29,42 @@ services:
     restart: unless-stopped
     networks:
       - quartz-network
+  # Optional: SQL Server (uncomment to use)
+  # sqlserver:
+  #   image: mcr.microsoft.com/mssql/server:2022-latest
+  #   container_name: quartz-sqlserver
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #     - SA_PASSWORD=YourStrong@Passw0rd
+  #   ports:
+  #     - "1433:1433"
+  #   networks:
+  #     - quartz-network
+
+  # Optional: MySQL (uncomment to use)
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: quartz-mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=rootpassword
+  #     - MYSQL_DATABASE=quartz
+  #   ports:
+  #     - "3306:3306"
+  #   networks:
+  #     - quartz-network
+
+  # Optional: PostgreSQL (uncomment to use)
+  # postgres:
+  #   image: postgres:15
+  #   container_name: quartz-postgres
+  #   environment:
+  #     - POSTGRES_DB=quartz
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=password
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - quartz-network
 
 networks:
   quartz-network:

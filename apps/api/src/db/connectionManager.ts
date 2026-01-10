@@ -1,97 +1,81 @@
-import { Pool, PoolClient } from 'pg';
 import { DatabaseConnection, DatabaseType, ConnectionTestResult } from './databaseTypes';
+import { IDatabaseAdapter } from './adapters/IDatabaseAdapter';
+import { PostgresAdapter } from './adapters/postgresAdapter';
+import { MssqlAdapter } from './adapters/mssqlAdapter';
+import { MysqlAdapter } from './adapters/mysqlAdapter';
 
 /**
  * Connection Manager for dynamic database connections
- * Manages PostgreSQL connection pools
+ * Supports PostgreSQL, SQL Server, and MySQL
  */
 class ConnectionManager {
-    private pools: Map<string, Pool> = new Map();
+    private pools: Map<string, any> = new Map();
+    private adapters: Map<DatabaseType, IDatabaseAdapter> = new Map();
+
+    constructor() {
+        // Register database adapters
+        this.adapters.set(DatabaseType.POSTGRESQL, new PostgresAdapter());
+        this.adapters.set(DatabaseType.SQL_SERVER, new MssqlAdapter());
+        this.adapters.set(DatabaseType.MYSQL, new MysqlAdapter());
+    }
+
+    /**
+     * Get adapter for database type
+     */
+    private getAdapter(databaseType: DatabaseType): IDatabaseAdapter {
+        const adapter = this.adapters.get(databaseType);
+        if (!adapter) {
+            throw new Error(`Database type ${databaseType} is not supported`);
+        }
+        return adapter;
+    }
 
     /**
      * Create a connection key from connection parameters
      */
     private createConnectionKey(config: DatabaseConnection): string {
-        return `${config.host}:${config.port}:${config.database}:${config.username}`;
+        return `${config.databaseType}:${config.host}:${config.port}:${config.database}:${config.username}`;
     }
 
     /**
      * Get or create a connection pool
      */
-    async getPool(config: DatabaseConnection): Promise<Pool> {
-        if (config.databaseType !== DatabaseType.POSTGRESQL) {
-            throw new Error(`Database type ${config.databaseType} is not yet supported`);
-        }
-
+    async getPool(config: DatabaseConnection): Promise<any> {
         const key = this.createConnectionKey(config);
 
         if (this.pools.has(key)) {
             return this.pools.get(key)!;
         }
 
-        const pool = new Pool({
-            host: config.host,
-            port: config.port,
-            database: config.database,
-            user: config.username,
-            password: config.password,
-            max: 10,
-            idleTimeoutMillis: 30000,
-            connectionTimeoutMillis: 5000,
-        });
-
-        // Set schema if provided
-        if (config.schema) {
-            pool.on('connect', (client: PoolClient) => {
-                client.query(`SET search_path TO ${config.schema}`).catch(err => {
-                    console.error('Error setting schema:', err);
-                });
-            });
-        }
+        const adapter = this.getAdapter(config.databaseType);
+        const pool = await adapter.createPool(config);
 
         this.pools.set(key, pool);
         return pool;
     }
 
     /**
+     * Execute query using appropriate adapter
+     */
+    async query(config: DatabaseConnection, sql: string, params?: any[]): Promise<any> {
+        const pool = await this.getPool(config);
+        const adapter = this.getAdapter(config.databaseType);
+        return adapter.query(pool, sql, params);
+    }
+
+    /**
      * Test database connection
      */
     async testConnection(config: DatabaseConnection): Promise<ConnectionTestResult> {
-        let pool: Pool | null = null;
-        let client: PoolClient | null = null;
-
         try {
-            pool = new Pool({
-                host: config.host,
-                port: config.port,
-                database: config.database,
-                user: config.username,
-                password: config.password,
-                connectionTimeoutMillis: 5000,
-            });
-
-            client = await pool.connect();
-            const result = await client.query('SELECT version()');
-            const version = result.rows[0]?.version || 'Unknown';
-
-            return {
-                success: true,
-                message: 'Connection successful',
-                serverVersion: version,
-            };
+            const adapter = this.getAdapter(config.databaseType);
+            return await adapter.testConnection(config);
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 success: false,
-                message: `Connection failed: ${errorMessage}`,
+                message: `Connection test failed: ${errorMessage}`,
             };
-        } finally {
-            if (client) {
-                client.release();
-            }
-            if (pool) {
-                await pool.end();
-            }
         }
     }
 
@@ -103,7 +87,8 @@ class ConnectionManager {
         const pool = this.pools.get(key);
 
         if (pool) {
-            await pool.end();
+            const adapter = this.getAdapter(config.databaseType);
+            await adapter.closePool(pool);
             this.pools.delete(key);
         }
     }
@@ -112,9 +97,24 @@ class ConnectionManager {
      * Close all pools
      */
     async closeAllPools(): Promise<void> {
-        const closePromises = Array.from(this.pools.values()).map(pool => pool.end());
+        const closePromises: Promise<void>[] = [];
+
+        for (const [key, pool] of this.pools.entries()) {
+            // Extract database type from key
+            const dbType = key.split(':')[0] as DatabaseType;
+            const adapter = this.getAdapter(dbType);
+            closePromises.push(adapter.closePool(pool));
+        }
+
         await Promise.all(closePromises);
         this.pools.clear();
+    }
+
+    /**
+     * Get adapter for external use (e.g., for queries in services)
+     */
+    getAdapterForType(databaseType: DatabaseType): IDatabaseAdapter {
+        return this.getAdapter(databaseType);
     }
 }
 

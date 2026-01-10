@@ -48,7 +48,7 @@ export class QuartzService {
 
         const result = await pool.query(query, params);
 
-        return result.rows.map(row => ({
+        return result.rows.map((row: any) => ({
             schedName: row.sched_name,
             jobName: row.job_name,
             jobGroup: row.job_group,
@@ -149,7 +149,7 @@ export class QuartzService {
 
         const result = await pool.query(query, params);
 
-        return result.rows.map(row => ({
+        return result.rows.map((row: any) => ({
             schedName: row.sched_name,
             triggerName: row.trigger_name,
             triggerGroup: row.trigger_group,
@@ -198,7 +198,7 @@ export class QuartzService {
 
         const result = await pool.query(query);
 
-        return result.rows.map(row => ({
+        return result.rows.map((row: any) => ({
             schedName: row.sched_name,
             entryId: row.entry_id,
             triggerName: row.trigger_name,
@@ -234,7 +234,7 @@ export class QuartzService {
 
         const result = await pool.query(query);
 
-        return result.rows.map(row => ({
+        return result.rows.map((row: any) => ({
             schedName: row.sched_name,
             instanceName: row.instance_name,
             lastCheckinTime: parseInt(row.last_checkin_time),

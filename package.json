@@ -8,7 +8,7 @@
         "packages/*"
     ],
     "scripts": {
-        "dev": "npm run dev --workspaces --if-present",
+        "dev": "concurrently \"npm run api:dev\" \"npm run web:dev\"",
         "build": "npm run build --workspaces --if-present",
         "clean": "npm run clean --workspaces --if-present",
         "api:dev": "npm run dev -w apps/api",
@@ -38,5 +38,8 @@
     "engines": {
         "node": ">=18.0.0",
         "npm": ">=9.0.0"
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.1"
     }
 }
