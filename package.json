@@ -1,0 +1,37 @@
+{
+    "name": "quartz-control-center",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Modern web-based management interface for Quartz Scheduler",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "npm run dev --workspaces --if-present",
+        "build": "npm run build --workspaces --if-present",
+        "clean": "npm run clean --workspaces --if-present",
+        "api:dev": "npm run dev -w apps/api",
+        "api:build": "npm run build -w apps/api",
+        "web:dev": "npm run dev -w apps/web",
+        "web:build": "npm run build -w apps/web"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mesutpiskin/quartz-control-center.git"
+    },
+    "keywords": [
+        "quartz",
+        "scheduler",
+        "job-scheduler",
+        "management",
+        "monitoring",
+        "postgresql"
+    ],
+    "author": "Mesut Pişkin",
+    "license": "MIT",
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    }
+}

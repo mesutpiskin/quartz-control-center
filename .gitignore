@@ -39,3 +39,6 @@ coverage/
 # Misc
 *.pem
 .cache/
+
+# Turbo
+.turbo/

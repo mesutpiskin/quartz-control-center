@@ -86,37 +86,30 @@ Quartz Control Center is a powerful, modern web application that provides a comp
    cd quartz-control-center
    ```
 
-2. **Install Backend Dependencies**
+2. **Install All Dependencies** (using npm workspaces)
    ```bash
-   cd backend
    npm install
    ```
 
-3. **Configure Backend** (Optional)
+3. **Configure API** (Optional)
    ```bash
-   cp .env.example .env
-   # Edit .env if you need to change default settings
+   cp apps/api/.env.example apps/api/.env
+   # Edit apps/api/.env if you need to change default settings
    ```
 
-4. **Start Backend**
+4. **Start API**
    ```bash
-   npm run dev
-   # Backend runs on http://localhost:3001
+   npm run api:dev
+   # API runs on http://localhost:3001
    ```
 
-5. **Install Frontend Dependencies** (in a new terminal)
+5. **Start Web** (in a new terminal)
    ```bash
-   cd frontend
-   npm install
+   npm run web:dev
+   # Web runs on http://localhost:3000
    ```
 
-6. **Start Frontend**
-   ```bash
-   npm run dev
-   # Frontend runs on http://localhost:3000
-   ```
-
-7. **Open Your Browser**
+6. **Open Your Browser**
    
    Navigate to `http://localhost:3000` and configure your first database connection!
 
@@ -143,18 +136,16 @@ Access the application at `http://localhost:3000`
 
 ### Manual Docker Build
 
-**Backend:**
+**API:**
 ```bash
-cd backend
-docker build -t quartz-control-center-backend .
-docker run -p 3001:3001 quartz-control-center-backend
+docker build -f docker/api/Dockerfile -t quartz-control-center-api .
+docker run -p 3001:3001 quartz-control-center-api
 ```
 
-**Frontend:**
+**Web:**
 ```bash
-cd frontend
-docker build -t quartz-control-center-frontend .
-docker run -p 3000:3000 quartz-control-center-frontend
+docker build -f docker/web/Dockerfile -t quartz-control-center-web .
+docker run -p 3000:3000 quartz-control-center-web
 ```
 
 ---
@@ -222,27 +213,51 @@ NEXT_PUBLIC_API_URL=http://localhost:3001  # Backend API URL
 
 ```
 quartz-control-center/
-├── backend/                 # Node.js/Express API
-│   ├── src/
-│   │   ├── db/             # Database connection management
-│   │   ├── middleware/     # Express middleware
-│   │   ├── models/         # TypeScript interfaces
-│   │   ├── routes/         # API endpoints
-│   │   ├── services/       # Business logic
-│   │   └── index.ts        # Express app entry
-│   ├── Dockerfile
-│   └── package.json
+├── apps/                   # Applications
+│   ├── api/               # Node.js/Express API
+│   │   ├── src/
+│   │   │   ├── db/       # Database connection management
+│   │   │   ├── middleware/ # Express middleware
+│   │   │   ├── models/   # TypeScript interfaces
+│   │   │   ├── routes/   # API endpoints
+│   │   │   ├── services/ # Business logic
+│   │   │   └── index.ts  # Express app entry
+│   │   ├── Dockerfile → docker/api/
+│   │   └── package.json
+│   │
+│   └── web/              # Next.js 14 App
+│       ├── src/
+│       │   ├── app/      # Next.js pages
+│       │   ├── components/ # React components
+│       │   ├── hooks/    # Custom React hooks
+│       │   └── lib/      # Utilities and types
+│       ├── Dockerfile → docker/web/
+│       └── package.json
 │
-├── frontend/               # Next.js 14 App
-│   ├── src/
-│   │   ├── app/           # Next.js pages
-│   │   ├── components/    # React components
-│   │   ├── hooks/         # Custom React hooks
-│   │   └── lib/           # Utilities and types
-│   ├── Dockerfile
-│   └── package.json
+├── packages/             # Shared packages
+│   └── shared-types/    # Common TypeScript interfaces
+│       ├── src/
+│       │   └── index.ts # Shared type definitions
+│       └── package.json
 │
-└── docker-compose.yml      # Docker Compose configuration
+├── docker/              # Docker configurations
+│   ├── api/
+│   │   ├── Dockerfile
+│   │   └── .dockerignore
+│   └── web/
+│       ├── Dockerfile
+│       └── .dockerignore
+│
+├── docs/                # Documentation
+│   ├── api.md          # API documentation
+│   └── architecture.md # Architecture overview
+│
+├── scripts/            # Build and deployment scripts
+│   └── build.sh
+│
+├── docker-compose.yml  # Docker Compose configuration
+├── package.json        # Workspace configuration
+└── tsconfig.json       # Root TypeScript config
 ```
 
 ---

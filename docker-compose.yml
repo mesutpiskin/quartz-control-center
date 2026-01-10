@@ -1,9 +1,9 @@
 services:
-  backend:
+  api:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: quartz-control-center-backend
+      context: .
+      dockerfile: docker/api/Dockerfile
+    container_name: quartz-control-center-api
     ports:
       - "3001:3001"
     environment:
@@ -14,18 +14,18 @@ services:
     networks:
       - quartz-network
 
-  frontend:
+  web:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: quartz-control-center-frontend
+      context: .
+      dockerfile: docker/web/Dockerfile
+    container_name: quartz-control-center-web
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=http://localhost:3001
     depends_on:
-      - backend
+      - api
     restart: unless-stopped
     networks:
       - quartz-network
