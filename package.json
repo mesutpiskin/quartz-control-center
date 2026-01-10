@@ -14,7 +14,12 @@
         "api:dev": "npm run dev -w apps/api",
         "api:build": "npm run build -w apps/api",
         "web:dev": "npm run dev -w apps/web",
-        "web:build": "npm run build -w apps/web"
+        "web:build": "npm run build -w apps/web",
+        "desktop:dev": "cd apps/desktop && npm start",
+        "desktop:build": "./scripts/build-desktop.sh",
+        "desktop:build:mac": "./scripts/build-desktop.sh mac",
+        "desktop:build:win": "./scripts/build-desktop.sh win",
+        "desktop:build:linux": "./scripts/build-desktop.sh linux"
     },
     "repository": {
         "type": "git",

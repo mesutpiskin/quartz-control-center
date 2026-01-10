@@ -1,0 +1,26 @@
+{
+    "name": "@quartz/desktop",
+    "version": "1.0.0",
+    "description": "Quartz Control Center Desktop Application",
+    "main": "src/main.js",
+    "private": true,
+    "author": "Mesut Pişkin",
+    "license": "MIT",
+    "scripts": {
+        "start": "electron .",
+        "build": "npm run build:apps && electron-builder",
+        "build:apps": "npm run build -w apps/api && npm run build -w apps/web",
+        "build:mac": "npm run build:apps && electron-builder --mac",
+        "build:win": "npm run build:apps && electron-builder --win",
+        "build:linux": "npm run build:apps && electron-builder --linux",
+        "pack": "npm run build:apps && electron-builder --dir"
+    },
+    "dependencies": {
+        "electron-log": "^5.0.1",
+        "electron-store": "^8.1.0"
+    },
+    "devDependencies": {
+        "electron": "^28.1.0",
+        "electron-builder": "^24.9.1"
+    }
+}

@@ -148,6 +148,10 @@ quartz-control-center/
 - [x] Job and trigger management
 - [x] Real-time monitoring
 - [x] Docker support
+- [x] **Desktop Application (Electron)**
+  - [x] macOS (.dmg)
+  - [x] Windows (.exe)
+  - [x] Linux (AppImage, .deb, .rpm)
 
 ### Version 2.0
 - [ ] **Database Support**

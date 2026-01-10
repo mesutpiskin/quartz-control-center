@@ -1,0 +1,96 @@
+appId: com.quartz.controlcenter
+productName: Quartz Control Center
+copyright: Copyright © 2026 Mesut Pişkin
+
+directories:
+  output: dist
+  buildResources: assets
+
+files:
+  - "!**/.git"
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
+  - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
+  - "!**/node_modules/*.d.ts"
+  - "!**/node_modules/.bin"
+  - "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}"
+  - "!.editorconfig"
+  - "!**/._*"
+  - "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}"
+  - "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}"
+  - "!**/{appveyor.yml,.travis.yml,circle.yml}"
+  - "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+
+extraResources:
+  - from: "../../apps/api/dist"
+    to: "apps/api/dist"
+  - from: "../../apps/web/.next/standalone"
+    to: "apps/web/.next/standalone"
+  - from: "../../apps/web/.next/static"
+    to: "apps/web/.next/static"
+  - from: "../../apps/web/public"
+    to: "apps/web/public"
+
+mac:
+  category: public.app-category.developer-tools
+  icon: assets/icon.icns
+  target:
+    - dmg
+    - zip
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+
+dmg:
+  title: ${productName} ${version}
+  icon: assets/icon.icns
+  background: assets/dmg-background.png
+  contents:
+    - x: 410
+      y: 150
+      type: link
+      path: /Applications
+    - x: 130
+      y: 150
+      type: file
+
+win:
+  target:
+    - nsis
+    - portable
+  icon: assets/icon.ico
+  publisherName: Quartz Control Center
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: ${productName}
+
+linux:
+  target:
+    - AppImage
+    - deb
+    - rpm
+  icon: assets/icon.png
+  category: Development
+  maintainer: mesutpiskin@github.com
+
+appImage:
+  license: LICENSE
+
+deb:
+  depends:
+    - gconf2
+    - gconf-service
+    - libnotify4
+    - libappindicator1
+    - libxtst6
+    - libnss3
+
+rpm:
+  depends:
+    - libXScrnSaver
