@@ -319,14 +319,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 👨‍💻 Author
-
-**Mesut Pişkin**
-- GitHub: [@mesutpiskin](https://github.com/mesutpiskin)
-- LinkedIn: [Mesut Pişkin](https://linkedin.com/in/mesutpiskin)
-
----
-
 ## 🙏 Acknowledgments
 
 - Built with [Quartz Scheduler](http://www.quartz-scheduler.org/)
@@ -348,7 +340,5 @@ If you encounter any issues or have questions:
 <div align="center">
 
 **⭐ Star this repository if you find it useful!**
-
-Made with ❤️ by [Mesut Pişkin](https://github.com/mesutpiskin)
 
 </div>
