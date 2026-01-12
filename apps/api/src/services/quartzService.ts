@@ -7,6 +7,7 @@ import {
     SchedulerInfo,
     SchedulerStatistics
 } from '../models/job.model';
+import cronstrue from 'cronstrue';
 
 /**
  * Service for Quartz job operations using direct SQL queries
@@ -331,6 +332,80 @@ export class QuartzService {
         );
 
         return result.rowCount !== null && result.rowCount > 0;
+    }
+
+    /**
+     * Validate cron expression
+     */
+    validateCronExpression(cronExpression: string): { valid: boolean; error?: string; readable?: string } {
+        try {
+            // Use cronstrue to validate and get readable format
+            const readable = cronstrue.toString(cronExpression);
+            return {
+                valid: true,
+                readable
+            };
+        } catch (error: any) {
+            return {
+                valid: false,
+                error: error.message || 'Invalid cron expression'
+            };
+        }
+    }
+
+    /**
+     * Parse cron expression to human-readable format
+     */
+    parseCronExpression(cronExpression: string): string {
+        try {
+            return cronstrue.toString(cronExpression);
+        } catch (error) {
+            return cronExpression;
+        }
+    }
+
+
+
+    /**
+     * Update trigger cron expression
+     */
+    async updateTriggerCronExpression(
+        config: DatabaseConnection,
+        triggerName: string,
+        triggerGroup: string,
+        newCronExpression: string
+    ): Promise<boolean> {
+        // Validate cron expression first
+        const validation = this.validateCronExpression(newCronExpression);
+        if (!validation.valid) {
+            throw new Error(`Invalid cron expression: ${validation.error}`);
+        }
+
+        const pool = await connectionManager.getPool(config);
+        const prefix = this.getSchemaPrefix(config.schema);
+
+        // Update cron expression in qrtz_cron_triggers
+        const cronResult = await pool.query(
+            `UPDATE ${prefix}qrtz_cron_triggers 
+       SET cron_expression = $1 
+       WHERE trigger_name = $2 AND trigger_group = $3`,
+            [newCronExpression, triggerName, triggerGroup]
+        );
+
+        if (cronResult.rowCount === 0) {
+            throw new Error('Trigger not found or is not a cron trigger');
+        }
+
+        // Let Quartz scheduler recalculate next_fire_time itself
+        // We'll just mark to ensure the trigger is re-evaluated
+        await pool.query(
+            `UPDATE ${prefix}qrtz_triggers 
+       SET next_fire_time = 0 
+       WHERE trigger_name = $1 AND trigger_group = $2`,
+            [triggerName, triggerGroup]
+        );
+
+        return true;
     }
 }
 

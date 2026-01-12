@@ -2,19 +2,57 @@
 
 import { useConnectionProfiles } from '@/hooks/useConnectionProfiles';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Database, Briefcase, Clock, Activity, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function HomePage() {
-  const { hasConnection, isLoaded } = useConnectionProfiles();
+  const { hasConnection, isLoaded, connection } = useConnectionProfiles();
   const router = useRouter();
+  const [statistics, setStatistics] = useState<any>(null);
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
+
+  const loadStatistics = async () => {
+    if (!connection) return;
+
+    setIsLoadingStats(true);
+    try {
+      const { apiClient, withConnection } = await import('@/lib/api/client');
+      const response = await apiClient.post(
+        '/api/scheduler/statistics',
+        withConnection(connection, {})
+      );
+      setStatistics(response.data.statistics);
+    } catch (error: any) {
+      console.error('Failed to load statistics:', error);
+    } finally {
+      setIsLoadingStats(false);
+    }
+  };
 
   useEffect(() => {
     if (isLoaded && !hasConnection) {
       router.push('/settings');
     }
   }, [hasConnection, isLoaded, router]);
+
+  // Load statistics on mount and when connection changes
+  useEffect(() => {
+    if (hasConnection && connection) {
+      loadStatistics();
+    }
+  }, [hasConnection, connection]);
+
+  // Auto-refresh statistics every 5 seconds
+  useEffect(() => {
+    if (!hasConnection || !connection) return;
+
+    const interval = setInterval(() => {
+      loadStatistics();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [hasConnection, connection]);
 
   if (!isLoaded) {
     return (
@@ -68,6 +106,53 @@ export default function HomePage() {
           color="orange"
         />
       </div>
+
+      {/* Statistics Section */}
+      {hasConnection && statistics && (
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            System Overview
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <StatCard
+              label="Total Jobs"
+              value={statistics.totalJobs}
+              icon={Briefcase}
+              color="blue"
+              isLoading={isLoadingStats}
+            />
+            <StatCard
+              label="Running Jobs"
+              value={statistics.executingJobs}
+              icon={Activity}
+              color="green"
+              isLoading={isLoadingStats}
+              pulse={statistics.executingJobs > 0}
+            />
+            <StatCard
+              label="Total Triggers"
+              value={statistics.totalTriggers}
+              icon={Clock}
+              color="purple"
+              isLoading={isLoadingStats}
+            />
+            <StatCard
+              label="Paused Triggers"
+              value={statistics.pausedTriggers}
+              icon={Clock}
+              color="orange"
+              isLoading={isLoadingStats}
+            />
+            <StatCard
+              label="Scheduler Instances"
+              value={statistics.schedulerInstances}
+              icon={Database}
+              color="indigo"
+              isLoading={isLoadingStats}
+            />
+          </div>
+        </div>
+      )}
 
       <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
         <div className="flex items-start justify-between">
@@ -134,6 +219,44 @@ function FeatureItem({ text }: { text: string }) {
     <div className="flex items-center space-x-2">
       <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
       <span className="text-indigo-100">{text}</span>
+    </div>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  icon: Icon,
+  color,
+  isLoading,
+  pulse = false
+}: {
+  label: string;
+  value: number;
+  icon: any;
+  color: string;
+  isLoading?: boolean;
+  pulse?: boolean;
+}) {
+  const colorClasses = {
+    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400',
+    green: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-600 dark:text-green-400',
+    purple: 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400',
+    orange: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800 text-orange-600 dark:text-orange-400',
+    indigo: 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400',
+  }[color];
+
+  return (
+    <div className={`rounded-xl border-2 p-6 ${colorClasses} transition-all duration-300 ${pulse ? 'animate-pulse' : ''}`}>
+      <div className="flex items-center justify-between mb-2">
+        <Icon className="h-8 w-8" />
+        {isLoading ? (
+          <div className="h-8 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+        ) : (
+          <span className="text-3xl font-bold">{value}</span>
+        )}
+      </div>
+      <p className="text-sm font-medium opacity-80">{label}</p>
     </div>
   );
 }

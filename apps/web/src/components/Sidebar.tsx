@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import {
     Home,
     Briefcase,
@@ -10,7 +11,9 @@ import {
     Settings,
     Database,
     Activity,
-    Github
+    Github,
+    ChevronLeft,
+    ChevronRight
 } from 'lucide-react';
 
 const navigation = [
@@ -24,16 +27,47 @@ const navigation = [
 
 export function Sidebar() {
     const pathname = usePathname();
+    const [isCollapsed, setIsCollapsed] = useState(false);
+
+    // Load collapse state from localStorage on mount
+    useEffect(() => {
+        const savedState = localStorage.getItem('sidebarCollapsed');
+        if (savedState !== null) {
+            setIsCollapsed(savedState === 'true');
+        }
+    }, []);
+
+    // Save collapse state to localStorage
+    const toggleCollapse = () => {
+        const newState = !isCollapsed;
+        setIsCollapsed(newState);
+        localStorage.setItem('sidebarCollapsed', String(newState));
+    };
 
     return (
         <div className="hidden md:flex md:flex-shrink-0">
-            <div className="flex flex-col w-64">
+            <div className={`flex flex-col transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
                 <div className="flex flex-col flex-grow bg-gradient-to-b from-indigo-900 to-indigo-800 pt-5 pb-4 overflow-y-auto shadow-xl">
-                    <div className="flex items-center flex-shrink-0 px-4 mb-8">
-                        <Database className="h-8 w-8 text-indigo-300" />
-                        <h1 className="ml-3 text-xl font-bold text-white">
-                            Quartz Control
-                        </h1>
+                    <div className="flex items-center flex-shrink-0 px-4 mb-8 justify-between">
+                        <div className="flex items-center">
+                            <Database className="h-8 w-8 text-indigo-300" />
+                            {!isCollapsed && (
+                                <h1 className="ml-3 text-xl font-bold text-white whitespace-nowrap">
+                                    Quartz Control
+                                </h1>
+                            )}
+                        </div>
+                        <button
+                            onClick={toggleCollapse}
+                            className="text-indigo-300 hover:text-white transition-colors p-1 rounded hover:bg-indigo-700/50"
+                            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                        >
+                            {isCollapsed ? (
+                                <ChevronRight className="h-5 w-5" />
+                            ) : (
+                                <ChevronLeft className="h-5 w-5" />
+                            )}
+                        </button>
                     </div>
                     <nav className="mt-5 flex-1 px-2 space-y-2">
                         {navigation.map((item) => {
@@ -45,31 +79,33 @@ export function Sidebar() {
                                     key={item.name}
                                     href={item.href}
                                     className={`
-                    group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200
+                    group flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-4'} py-3 text-sm font-medium rounded-lg transition-all duration-200
                     ${isActive
                                             ? 'bg-indigo-700 text-white shadow-md'
                                             : 'text-indigo-100 hover:bg-indigo-700/50 hover:text-white'
                                         }
                   `}
+                                    title={isCollapsed ? item.name : undefined}
                                 >
                                     <Icon
-                                        className={`mr-3 h-5 w-5 ${isActive ? 'text-white' : 'text-indigo-300'
+                                        className={`${isCollapsed ? '' : 'mr-3'} h-5 w-5 ${isActive ? 'text-white' : 'text-indigo-300'
                                             }`}
                                     />
-                                    {item.name}
+                                    {!isCollapsed && item.name}
                                 </Link>
                             );
                         })}
                     </nav>
-                    <div className="flex-shrink-0 px-4 py-4 border-t border-indigo-700 space-y-2">
+                    <div className="flex-shrink-0 px-4 py-4 border-t border-indigo-700">
                         <a
                             href="https://github.com/mesutpiskin/quartz-control-center"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center text-xs text-indigo-300 hover:text-white transition-colors"
+                            className={`flex items-center ${isCollapsed ? 'justify-center' : ''} text-xs text-indigo-300 hover:text-white transition-colors`}
+                            title={isCollapsed ? 'View on GitHub' : undefined}
                         >
-                            <Github className="h-4 w-4 mr-2" />
-                            <span>View on GitHub</span>
+                            <Github className={`h-4 w-4 ${isCollapsed ? '' : 'mr-2'}`} />
+                            {!isCollapsed && <span>View on GitHub</span>}
                         </a>
                     </div>
                 </div>

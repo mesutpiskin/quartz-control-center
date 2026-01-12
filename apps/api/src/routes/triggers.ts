@@ -92,4 +92,57 @@ router.post('/resume', validateConnection, asyncHandler(async (req: any, res: an
     });
 }));
 
+/**
+ * Update trigger cron expression
+ * POST /api/triggers/update
+ */
+router.post('/update', validateConnection, asyncHandler(async (req: any, res: any) => {
+    const connection: DatabaseConnection = req.body.connection;
+    const { triggerName, triggerGroup, cronExpression } = req.body;
+
+    if (!triggerName || !triggerGroup || !cronExpression) {
+        return res.status(400).json({
+            error: 'Validation Error',
+            message: 'triggerName, triggerGroup, and cronExpression are required'
+        });
+    }
+
+    try {
+        await quartzService.updateTriggerCronExpression(
+            connection,
+            triggerName,
+            triggerGroup,
+            cronExpression
+        );
+
+        res.json({
+            success: true,
+            message: `Trigger ${triggerGroup}.${triggerName} updated successfully`
+        });
+    } catch (error: any) {
+        res.status(400).json({
+            error: 'Update Failed',
+            message: error.message
+        });
+    }
+}));
+
+/**
+ * Validate cron expression
+ * POST /api/triggers/validate-cron
+ */
+router.post('/validate-cron', asyncHandler(async (req: any, res: any) => {
+    const { cronExpression } = req.body;
+
+    if (!cronExpression) {
+        return res.status(400).json({
+            error: 'Validation Error',
+            message: 'cronExpression is required'
+        });
+    }
+
+    const validation = quartzService.validateCronExpression(cronExpression);
+    res.json(validation);
+}));
+
 export default router;
