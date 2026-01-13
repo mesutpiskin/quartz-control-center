@@ -360,7 +360,7 @@ export default function SettingsPage() {
                             type="text"
                             value={profileName}
                             onChange={(e) => setProfileName(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             placeholder="e.g., Production DB, Staging DB"
                         />
                     </div>
@@ -374,7 +374,7 @@ export default function SettingsPage() {
                             name="host"
                             value={formData.host}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             placeholder="localhost"
                         />
                     </div>
@@ -388,7 +388,7 @@ export default function SettingsPage() {
                             name="port"
                             value={formData.port}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             placeholder="5432"
                         />
                     </div>
@@ -401,7 +401,7 @@ export default function SettingsPage() {
                             name="databaseType"
                             value={formData.databaseType}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
                             <option value="postgresql">PostgreSQL</option>
                             <option value="sqlserver">SQL Server</option>
@@ -418,7 +418,7 @@ export default function SettingsPage() {
                             name="database"
                             value={formData.database}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             placeholder="quartz_db"
                         />
                     </div>
@@ -432,7 +432,7 @@ export default function SettingsPage() {
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             placeholder="postgres"
                         />
                     </div>
@@ -446,7 +446,7 @@ export default function SettingsPage() {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             placeholder="••••••••"
                         />
                     </div>
@@ -460,7 +460,7 @@ export default function SettingsPage() {
                                 name="schema"
                                 value={formData.schema}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             >
                                 {schemas.map(schema => (
                                     <option key={schema.schemaName} value={schema.schemaName}>
@@ -474,7 +474,7 @@ export default function SettingsPage() {
                                 name="schema"
                                 value={formData.schema || ''}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                 placeholder="public"
                             />
                         )}

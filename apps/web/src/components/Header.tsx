@@ -2,10 +2,11 @@
 
 import { useConnectionProfiles } from '@/hooks/useConnectionProfiles';
 import { useTheme } from '@/contexts/ThemeContext';
-import { CheckCircle, XCircle, Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Database } from 'lucide-react';
+import Link from 'next/link';
 
 export function Header() {
-    const { activeProfile, hasConnection } = useConnectionProfiles();
+    const { activeProfile } = useConnectionProfiles();
     const { effectiveTheme, toggleTheme } = useTheme();
 
     return (
@@ -34,30 +35,20 @@ export function Header() {
                         )}
                     </button>
 
-                    {hasConnection && activeProfile ? (
-                        <div className="flex items-center space-x-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                    {/* Profile Name - Click to Settings */}
+                    {activeProfile && (
+                        <Link
+                            href="/settings"
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                            title="Click to manage database connections"
+                        >
+                            <Database className="h-5 w-5 text-sage-300 group-hover:text-sage-200" />
                             <div className="text-sm">
-                                <p className="font-medium text-green-900 dark:text-green-100">
+                                <div className="font-medium text-gray-900 dark:text-white group-hover:text-sage-300">
                                     {activeProfile.name}
-                                </p>
-                                <p className="text-green-700 dark:text-green-300">
-                                    {activeProfile.connection.host}:{activeProfile.connection.port}/{activeProfile.connection.database}
-                                </p>
+                                </div>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="flex items-center space-x-2 px-4 py-2 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                            <XCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-                            <div className="text-sm">
-                                <p className="font-medium text-yellow-900 dark:text-yellow-100">
-                                    Not Connected
-                                </p>
-                                <p className="text-yellow-700 dark:text-yellow-300">
-                                    Configure in Settings
-                                </p>
-                            </div>
-                        </div>
+                        </Link>
                     )}
                 </div>
             </div>

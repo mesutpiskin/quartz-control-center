@@ -72,7 +72,7 @@ export function DataTable<TData>({
                         placeholder={searchPlaceholder}
                         value={globalFilter ?? ''}
                         onChange={(e) => setGlobalFilter(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-200 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-200 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
                 </div>
                 <div className="flex items-center gap-2">
@@ -82,7 +82,7 @@ export function DataTable<TData>({
                     <select
                         value={table.getState().pagination.pageSize}
                         onChange={(e) => table.setPageSize(Number(e.target.value))}
-                        className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-200 dark:bg-gray-700 dark:text-white"
+                        className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     >
                         {[10, 20, 30, 50, 100].map((pageSize) => (
                             <option key={pageSize} value={pageSize}>
@@ -135,7 +135,7 @@ export function DataTable<TData>({
                                                                 onChange={(e) => header.column.setFilterValue(e.target.value)}
                                                                 onClick={(e) => e.stopPropagation()}
                                                                 placeholder={`Filter...`}
-                                                                className="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-sage-200 dark:bg-gray-800 dark:text-white"
+                                                                className="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-sage-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                                                             />
                                                         </div>
                                                     )}

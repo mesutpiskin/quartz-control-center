@@ -7,6 +7,7 @@ import { Clock, Pause, Play, RefreshCw, Eye } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
 import { TriggerDetailModal } from '@/components/TriggerDetailModal';
+import cronstrue from 'cronstrue';
 
 interface TriggerInfo {
     triggerName: string;
@@ -204,9 +205,20 @@ export default function TriggersPage() {
                 header: 'Cron Expression',
                 cell: ({ row }) => {
                     if (row.original.cronExpression) {
+                        let humanReadable = '';
+                        try {
+                            humanReadable = cronstrue.toString(row.original.cronExpression);
+                        } catch (e) {
+                            humanReadable = 'Invalid cron';
+                        }
                         return (
-                            <div className="text-xs font-mono text-gray-900 dark:text-white truncate" title={row.original.cronExpression}>
-                                {row.original.cronExpression}
+                            <div className="min-w-0">
+                                <div className="text-xs font-mono text-gray-900 dark:text-white truncate" title={row.original.cronExpression}>
+                                    {row.original.cronExpression}
+                                </div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400 truncate" title={humanReadable}>
+                                    {humanReadable}
+                                </div>
                             </div>
                         );
                     }
@@ -214,8 +226,8 @@ export default function TriggersPage() {
                 },
                 enableSorting: false,
                 enableColumnFilter: true,
-                maxSize: 200,
-                minSize: 150,
+                maxSize: 250,
+                minSize: 200,
             },
             {
                 id: 'actions',
