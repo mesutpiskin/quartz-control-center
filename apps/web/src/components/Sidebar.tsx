@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Logo } from './Logo';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import {
@@ -50,12 +51,17 @@ export function Sidebar() {
             <div className={`flex flex-col transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
                 <div className="flex flex-col flex-grow bg-gradient-to-b from-sage-300 to-[#5a6858] pt-5 pb-4 overflow-y-auto shadow-xl">
                     <div className="flex items-center flex-shrink-0 px-4 mb-8 justify-between">
-                        <div className="flex items-center">
-                            <Database className="h-8 w-8 text-sage-50" />
+                        <div className="flex items-center w-full px-2">
+                            <Logo className="h-8 w-8 text-white flex-shrink-0" />
                             {!isCollapsed && (
-                                <h1 className="ml-3 text-xl font-bold text-white whitespace-nowrap">
-                                    Quartz Control
-                                </h1>
+                                <div className="ml-3 overflow-hidden">
+                                    <h1 className="text-lg font-bold text-white leading-tight">
+                                        Quartz
+                                    </h1>
+                                    <h2 className="text-xs font-medium text-sage-200 uppercase tracking-wider">
+                                        Control Center
+                                    </h2>
+                                </div>
                             )}
                         </div>
                         <button

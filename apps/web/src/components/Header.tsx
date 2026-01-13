@@ -3,6 +3,7 @@
 import { useConnectionProfiles } from '@/hooks/useConnectionProfiles';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Sun, Moon, Database } from 'lucide-react';
+import { Logo } from './Logo';
 import Link from 'next/link';
 
 export function Header() {
@@ -12,13 +13,16 @@ export function Header() {
     return (
         <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between px-6 py-4">
-                <div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        Quartz Control Center
-                    </h2>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        Manage your scheduler jobs with ease
-                    </p>
+                <div className="flex items-center gap-3">
+                    <Logo className="h-8 w-8 text-sage-600 dark:text-sage-400" />
+                    <div>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                            Quartz Control Center
+                        </h2>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            Manage your scheduler jobs with ease
+                        </p>
+                    </div>
                 </div>
 
                 <div className="flex items-center space-x-4">
