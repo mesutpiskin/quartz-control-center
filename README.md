@@ -122,5 +122,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 ---
 
 <div align="center">
-  if you like this project, please give a star on GitHub. 
+<p>  if you like this project, please give a star on GitHub. </p>
+<p><i>Special thanks to <a href="https://github.com/quartz-scheduler/quartz">Quartz Scheduler</a></i></p>
 </div>
+
