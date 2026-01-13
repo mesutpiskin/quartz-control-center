@@ -41,16 +41,14 @@ It eliminates the need for maintaining custom-built management UIs or running he
 *   **Cross-Database Support:** Native support for PostgreSQL, Microsoft SQL Server, and MySQL.
 *   **Deployment Flexibility:** Run as a native **Desktop App** (macOS) or as a containerized **Web Service** (Docker).
 
----
+
 
 ## Screenshots
 
 <div align="center">
-  <img src="https://github.com/mesutpiskin/quartz-control-center/raw/main/docs/screenshot_dashboard.png" alt="Dashboard Screenshot" width="800" />
-  <!-- Replace with actual screenshot path if available in repo, or remove if not -->
+  <img src="/docs/images/quartz_dashboard_ss.png" alt="Quartz Control Center Dashboard" width="800" style="border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.1);" />
 </div>
 
----
 
 ## Installation
 
