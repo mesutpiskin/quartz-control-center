@@ -66,7 +66,20 @@ try {
 // 3. Package with Electron Builder
 console.log('\n💿 Packaging Application...');
 try {
-    execSync('npx electron-builder build --mac', { cwd: desktopDir, stdio: 'inherit' });
+    const args = process.argv.slice(2);
+    let buildCommand = 'npx electron-builder build';
+    
+    if (args.includes('--win')) {
+        buildCommand += ' --win';
+    } else if (args.includes('--all')) {
+        buildCommand += ' --mac --win';
+    } else {
+        // Default to mac if on mac and no specific target
+        buildCommand += ' --mac';
+    }
+
+    console.log(`> Running: ${buildCommand}`);
+    execSync(buildCommand, { cwd: desktopDir, stdio: 'inherit' });
     console.log('✅ Application Packaged Successfully! Check apps/desktop/dist-electron');
 } catch (error) {
     console.error('❌ Packaging Failed:', error);

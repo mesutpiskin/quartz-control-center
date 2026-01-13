@@ -1,174 +1,128 @@
-# Quartz Control Center
+<div align="center">
+  <br />
+  <img src="apps/web/public/logo.png" alt="Quartz Control Center Logo" width="120" height="120" />
+  <br />
+  <h1 align="center">Quartz Control Center</h1>
+
+  <p align="center">
+    <strong>Enterprise-grade management interface for Quartz Scheduler</strong>
+  </p>
+
+  <p align="center">
+    <a href="https://github.com/mesutpiskin/quartz-control-center/releases">
+      <img src="https://img.shields.io/github/v/release/mesutpiskin/quartz-control-center?style=flat-square&color=2563EB" alt="Release" />
+    </a>
+    <a href="https://github.com/mesutpiskin/quartz-control-center/blob/main/LICENSE">
+      <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License" />
+    </a>
+    <a href="https://www.typescriptlang.org/">
+      <img src="https://img.shields.io/badge/TypeScript-Ready-blue?style=flat-square&logo=typescript" alt="TypeScript" />
+    </a>
+    <a href="https://www.electronjs.org/">
+      <img src="https://img.shields.io/badge/Electron-Desktop-purple?style=flat-square&logo=electron" alt="Electron" />
+    </a>
+    <a href="https://nextjs.org/">
+      <img src="https://img.shields.io/badge/Next.js-Web-black?style=flat-square&logo=next.js" alt="Next.js" />
+    </a>
+  </p>
+  
+  <br />
+</div>
+
+## 📋 Overview
+
+**Quartz Control Center** is a robust, standalone management interface designed for enterprise applications using **Quartz Scheduler**. 
+
+It eliminates the need for maintaining custom-built management UIs or running heavy Java-based tools just to inspect your scheduled tasks. By connecting directly to your persistence layer, it provides a centralized dashboard to visualize, monitor, and control your job execution environment in real-time.
+
+### Key Capabilities
+*   **Centralized Management:** Manage jobs and triggers across multiple environments (Dev, Test, Prod) from a single interface.
+*   **Real-time Observability:** Monitor currently executing jobs and visualize load.
+*   **Cross-Database Support:** Native support for PostgreSQL, Microsoft SQL Server, and MySQL.
+*   **Deployment Flexibility:** Run as a native **Desktop App** (macOS) or as a containerized **Web Service** (Docker).
+
+---
+
+## Screenshots
 
 <div align="center">
-
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supported-blue?style=flat-square&logo=postgresql)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue?style=flat-square&logo=docker)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
-
-**Modern web-based management interface for Quartz Scheduler**
-
-Connect to your existing Quartz databases and manage jobs, triggers, and monitor execution in real-time.
-
-[Quick Start](#-quick-start) • [Docker](#-docker) • [Features](#-features)
+  <img src="https://github.com/mesutpiskin/quartz-control-center/raw/main/docs/screenshot_dashboard.png" alt="Dashboard Screenshot" width="800" />
+  <!-- Replace with actual screenshot path if available in repo, or remove if not -->
 </div>
 
 ---
 
-## 📋 What is it?
+## Installation
 
-Quartz Control Center is a standalone web application that lets you **manage your Quartz Scheduler databases** without running a separate scheduler instance. Simply connect to your existing PostgreSQL database and:
+### Desktop Application
+The easiest way to get started. A self-contained Electron application that runs locally.
 
-- ✅ View and manage jobs
-- ✅ Control triggers (pause/resume)
-- ✅ Monitor executing jobs in real-time
-- ✅ Manage multiple database connections
-- ✅ Export/import connection profiles
+#### macOS (Apple Silicon)
+[![Download for macOS](https://img.shields.io/badge/Download-macOS_(Apple_Silicon)-white?style=for-the-badge&logo=apple)](https://github.com/mesutpiskin/quartz-control-center/releases/latest)
 
-## 🚀 Quick Start
+1.  Download the `.dmg` file from the [Releases Page](https://github.com/mesutpiskin/quartz-control-center/releases/latest).
+2.  Open the file and drag **Quartz Control Center** to your Applications folder.
 
-### Option 1: Docker Compose (Recommended)
+#### Windows (x64 / ARM64)
+[![Download for Windows](https://img.shields.io/badge/Download-Windows-blue?style=for-the-badge&logo=windows)](https://github.com/mesutpiskin/quartz-control-center/releases/latest)
+
+1.  Download the `.exe` file from the [Releases Page](https://github.com/mesutpiskin/quartz-control-center/releases/latest).
+2.  Run the installer (`Quartz Control Center-Setup.exe`).
+
+
+### Docker
+Ideal for shared team environments or hosted deployments.
 
 ```bash
 git clone https://github.com/mesutpiskin/quartz-control-center.git
 cd quartz-control-center
 docker-compose up -d
 ```
+Access the dashboard at `http://localhost:3000`.
 
-Open `http://localhost:3000` and configure your database connection.
-
-### Option 2: Development Mode
-
+### Development
 ```bash
-# Clone and install
-git clone https://github.com/mesutpiskin/quartz-control-center.git
-cd quartz-control-center
 npm install
-
-# Start API (Terminal 1)
-npm run api:dev
-
-# Start Web (Terminal 2)
-npm run web:dev
+npm run dev
 ```
+Open http://localhost:3000 in your browser.
 
-Open `http://localhost:3000`
+---
 
-## 🐳 Docker
+## Architecture & Tech Stack
 
-### Build and Run
+The project is built as a monorepo using modern web technologies, ensuring performance and extensibility.
 
-```bash
-# Using Docker Compose
-docker-compose up -d
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Frontend** | [Next.js 14](https://nextjs.org/) | React framework for the UI, ensuring fast rendering and static export capabilities. |
+| **Backend** | [Express.js](https://expressjs.com/) | API layer handling database connections and Quartz SQL queries. |
+| **Desktop** | [Electron](https://www.electronjs.org/) | Wraps the web app and API into a native executable. |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) | Utility-first CSS framework for a consistent, modern design system. |
+| **State** | [React Query](https://tanstack.com/query) | Efficient server state management and caching. |
 
-# Or build manually
-docker build -f docker/api/Dockerfile -t qcc-api .
-docker build -f docker/web/Dockerfile -t qcc-web .
-```
+---
+
+## Configuration
 
 ### Environment Variables
+When running as a web service or in development, you can configure the application using `.env` files.
 
-**API** (`apps/api/.env`):
-```bash
+**API (`apps/api/.env`)**
+```env
 PORT=3001
 CORS_ORIGIN=http://localhost:3000
 NODE_ENV=production
 ```
 
-**Web**:
-```bash
+**Web (`apps/web/.env`)**
+```env
 NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
-## ⚙️ How It Works
-
-1. **Connect**: Enter your PostgreSQL database credentials
-2. **Detect**: Application automatically detects Quartz tables in your schema
-3. **Manage**: View, control, and monitor your scheduled jobs through a modern UI
-
-```
-User Interface (Web)
-        ↓
-    API Layer
-        ↓
-Your PostgreSQL Database
-        ↓
-    QRTZ_* Tables
-```
-
-The application performs **direct SQL queries** to Quartz tables. No scheduler instance required.
-
-## ✨ Features
-
-### Connection Management
-- **Multi-Profile Support** - Save multiple database connections
-- **Quick Switching** - Switch between databases instantly
-- **Export/Import** - Backup and share connection profiles
-
-### Job Management
-- View all jobs with search and filtering
-- Delete jobs with cascade trigger removal
-- Display job properties (durable, non-concurrent, recovery)
-
-### Trigger Management
-- View cron expressions and schedules
-- Pause/resume triggers
-- Color-coded states (WAITING, PAUSED, ACQUIRED, BLOCKED)
-- Next/previous fire times
-
-### Monitoring
-- Real-time executing jobs view with auto-refresh
-- Running duration tracking
-- Scheduler instance information
-- Comprehensive statistics dashboard
-
-## 📁 Project Structure
-
-```
-quartz-control-center/
-├── apps/
-│   ├── api/              # Node.js/Express backend
-│   └── web/              # Next.js frontend
-├── packages/
-│   └── shared-types/     # Shared TypeScript types
-├── docker/               # Dockerfiles
-├── docs/                 # Documentation
-│   ├── api.md           # API endpoints
-│   └── architecture.md  # Architecture details
-└── scripts/             # Build scripts
-```
-
-## 📖 Documentation
-
-- [API Documentation](docs/api.md)
-- [Architecture Overview](docs/architecture.md)
-
-## 🔐 Security Note
-
-⚠️ **Current version stores credentials in browser localStorage**. For production:
-- Implement server-side session management
-- Use encrypted credential storage
-- Add authentication layer
-- Enable HTTPS/TLS
-
-## 🤝 Contributing
-
-Contributions welcome! Please:
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing`)
-5. Open Pull Request
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file
 
 ---
 
 <div align="center">
-
-**⭐ Star this repository if you find it useful!**
-
+  if you like this project, please give a star on GitHub. 
 </div>
