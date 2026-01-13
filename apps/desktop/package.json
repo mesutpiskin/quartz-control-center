@@ -1,26 +1,59 @@
 {
-    "name": "@quartz/desktop",
-    "version": "1.0.0",
-    "description": "Quartz Control Center Desktop Application",
-    "main": "src/main.js",
-    "private": true,
-    "author": "Mesut Pişkin",
-    "license": "MIT",
-    "scripts": {
-        "start": "electron .",
-        "build": "cd ../.. && npm run api:build && npm run web:build && cd apps/desktop && electron-builder",
-        "build:apps": "cd ../.. && npm run api:build && npm run web:build",
-        "build:mac": "npm run build:apps && electron-builder --mac",
-        "build:win": "npm run build:apps && electron-builder --win",
-        "build:linux": "npm run build:apps && electron-builder --linux",
-        "pack": "npm run build:apps && electron-builder --dir"
+  "name": "quartz-control-center-desktop",
+  "version": "1.0.0",
+  "description": "Quartz Control Center Desktop App",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "electron .",
+    "build": "tsc && electron-builder",
+    "compile": "tsc"
+  },
+  "author": "Quartz Control Center",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cronstrue": "^3.9.0",
+    "debug": "^4.4.3",
+    "dotenv": "^16.6.1",
+    "electron-is-dev": "^2.0.0",
+    "express": "^4.22.1",
+    "fs-extra": "^11.3.3",
+    "mssql": "^10.0.4",
+    "mysql2": "^3.16.0",
+    "pg": "^8.16.3",
+    "promise-retry": "^2.0.1",
+    "read-config-file": "^6.3.2",
+    "sax": "^1.4.4",
+    "source-map-support": "^0.5.21"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.6",
+    "@types/pg": "^8.16.0",
+    "electron": "33.0.0",
+    "electron-builder": "^24.9.1",
+    "typescript": "^5.3.3"
+  },
+  "build": {
+    "appId": "com.quartzcontrol.app",
+    "productName": "Quartz Control Center",
+    "directories": {
+      "output": "dist-electron"
     },
-    "dependencies": {
-        "electron-log": "^5.0.1",
-        "electron-store": "^8.1.0"
-    },
-    "devDependencies": {
-        "electron": "28.1.0",
-        "electron-builder": "24.9.1"
+    "files": [
+      "dist/**/*",
+      "dist-web/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        "dmg"
+      ],
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "gatekeeperAssess": false
     }
+  }
 }

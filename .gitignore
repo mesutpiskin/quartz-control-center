@@ -6,6 +6,8 @@ yarn-error.log*
 
 # Build outputs
 dist/
+dist-web/
+dist-electron/
 build/
 !apps/desktop/build/
 out/
