@@ -5,6 +5,7 @@ import databaseRoutes from './routes/database';
 import jobRoutes from './routes/jobs';
 import triggerRoutes from './routes/triggers';
 import schedulerRoutes from './routes/scheduler';
+import databaseViewRoutes from './routes/databaseView';
 import { errorHandler } from './middleware/errorHandler';
 import { connectionManager } from './db/connectionManager';
 
@@ -27,6 +28,7 @@ app.use('/api/database', databaseRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/triggers', triggerRoutes);
 app.use('/api/scheduler', schedulerRoutes);
+app.use('/api/database-view', databaseViewRoutes);
 
 // Health check
 app.get('/health', (_req, res) => {
@@ -48,6 +50,7 @@ app.get('/', (_req, res) => {
             jobs: '/api/jobs',
             triggers: '/api/triggers',
             scheduler: '/api/scheduler',
+            databaseView: '/api/database-view',
             health: '/health'
         }
     });

@@ -1,9 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useConnectionProfiles } from '@/hooks/useConnectionProfiles';
 import { apiClient, withConnection } from '@/lib/api/client';
-import { Clock, Pause, Play, RefreshCw, ChevronRight, ChevronDown, Edit, FileText } from 'lucide-react';
+import { Clock, Pause, Play, RefreshCw, Eye } from 'lucide-react';
+import { DataTable } from '@/components/DataTable';
+import { ColumnDef } from '@tanstack/react-table';
+import { TriggerDetailModal } from '@/components/TriggerDetailModal';
 
 interface TriggerInfo {
     triggerName: string;
@@ -16,13 +19,20 @@ interface TriggerInfo {
     triggerType: string;
     cronExpression?: string;
     priority: number;
+    startTime?: number;
+    endTime?: number;
+    calendarName?: string;
+    timeZoneId?: string;
+    misfireInstr?: number;
+    description?: string;
 }
 
 export default function TriggersPage() {
     const { connection, hasConnection } = useConnectionProfiles();
     const [triggers, setTriggers] = useState<TriggerInfo[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+    const [selectedTrigger, setSelectedTrigger] = useState<TriggerInfo | null>(null);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
     const loadTriggers = async () => {
         if (!connection) return;
@@ -78,34 +88,177 @@ export default function TriggersPage() {
     };
 
     const formatFireTime = (timestamp?: number) => {
-        if (!timestamp) return 'N/A';
-        return new Date(timestamp).toLocaleString();
-    };
+        if (!timestamp) return 'Not set';
+        const date = new Date(timestamp);
+        const now = Date.now();
+        const diff = timestamp - now;
 
-    const toggleRow = (triggerId: string) => {
-        const newExpanded = new Set(expandedRows);
-        if (newExpanded.has(triggerId)) {
-            newExpanded.delete(triggerId);
-        } else {
-            newExpanded.add(triggerId);
-        }
-        setExpandedRows(newExpanded);
+        if (Math.abs(diff) < 60000) return 'Less than a minute';
+        if (Math.abs(diff) < 3600000) return `${Math.floor(Math.abs(diff) / 60000)}m ${diff > 0 ? 'from now' : 'ago'}`;
+        if (Math.abs(diff) < 86400000) return `${Math.floor(Math.abs(diff) / 3600000)}h ${diff > 0 ? 'from now' : 'ago'}`;
+
+        return date.toLocaleString();
     };
 
     const getStateColor = (state: string) => {
-        switch (state.toUpperCase()) {
-            case 'WAITING':
-                return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-            case 'PAUSED':
-                return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-            case 'ACQUIRED':
-                return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
-            case 'BLOCKED':
-                return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-            default:
-                return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
-        }
+        const colors: Record<string, string> = {
+            NORMAL: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+            PAUSED: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+            BLOCKED: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+            ERROR: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+            COMPLETE: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+        };
+        return colors[state] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
     };
+
+    const columns = useMemo<ColumnDef<TriggerInfo>[]>(
+        () => [
+            {
+                accessorKey: 'triggerName',
+                header: 'Trigger Name',
+                cell: ({ row }) => (
+                    <div className="flex items-center">
+                        <Clock className="h-4 w-4 text-purple-600 dark:text-purple-400 mr-2 flex-shrink-0" />
+                        <div className="min-w-0">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                {row.original.triggerName}
+                            </div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                {row.original.triggerGroup}
+                            </div>
+                        </div>
+                    </div>
+                ),
+                enableSorting: true,
+                enableColumnFilter: true,
+                maxSize: 220,
+                minSize: 180,
+            },
+            {
+                accessorKey: 'jobName',
+                header: 'Job',
+                cell: ({ row }) => (
+                    <div className="min-w-0">
+                        <div className="text-sm text-gray-900 dark:text-white truncate">
+                            {row.original.jobName}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                            {row.original.jobGroup}
+                        </div>
+                    </div>
+                ),
+                enableSorting: true,
+                enableColumnFilter: true,
+                maxSize: 200,
+                minSize: 150,
+            },
+            {
+                accessorKey: 'nextFireTime',
+                header: 'Next Fire',
+                cell: ({ row }) => (
+                    <div className="min-w-0">
+                        <div className="text-sm text-gray-900 dark:text-white truncate">
+                            {formatFireTime(row.original.nextFireTime)}
+                        </div>
+                        {row.original.prevFireTime && (
+                            <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                Prev: {formatFireTime(row.original.prevFireTime)}
+                            </div>
+                        )}
+                    </div>
+                ),
+                enableSorting: true,
+                enableColumnFilter: false,
+                sortingFn: 'basic',
+                maxSize: 200,
+                minSize: 150,
+            },
+            {
+                accessorKey: 'triggerState',
+                header: 'State',
+                cell: ({ getValue }) => (
+                    <span className={`px-2 py-1 inline-flex text-xs font-semibold rounded-full ${getStateColor(getValue() as string)}`}>
+                        {getValue() as string}
+                    </span>
+                ),
+                enableSorting: true,
+                enableColumnFilter: true,
+                maxSize: 120,
+                minSize: 100,
+            },
+            {
+                accessorKey: 'triggerType',
+                header: 'Type',
+                cell: ({ getValue }) => (
+                    <span className="text-xs text-gray-600 dark:text-gray-400">
+                        {getValue() as string}
+                    </span>
+                ),
+                enableSorting: true,
+                enableColumnFilter: true,
+                maxSize: 120,
+                minSize: 100,
+            },
+            {
+                accessorKey: 'cronExpression',
+                header: 'Cron Expression',
+                cell: ({ row }) => {
+                    if (row.original.cronExpression) {
+                        return (
+                            <div className="text-xs font-mono text-gray-900 dark:text-white truncate" title={row.original.cronExpression}>
+                                {row.original.cronExpression}
+                            </div>
+                        );
+                    }
+                    return <span className="text-xs text-gray-400">-</span>;
+                },
+                enableSorting: false,
+                enableColumnFilter: true,
+                maxSize: 200,
+                minSize: 150,
+            },
+            {
+                id: 'actions',
+                header: 'Actions',
+                cell: ({ row }) => (
+                    <div className="flex items-center justify-end gap-1">
+                        {row.original.triggerState === 'PAUSED' ? (
+                            <button
+                                onClick={() => resumeTrigger(row.original.triggerName, row.original.triggerGroup)}
+                                className="p-1 text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                                title="Resume"
+                            >
+                                <Play className="h-4 w-4" />
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => pauseTrigger(row.original.triggerName, row.original.triggerGroup)}
+                                className="p-1 text-yellow-600 hover:text-yellow-800 dark:text-yellow-400 dark:hover:text-yellow-300 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                                title="Pause"
+                            >
+                                <Pause className="h-4 w-4" />
+                            </button>
+                        )}
+                        <button
+                            onClick={() => {
+                                setSelectedTrigger(row.original);
+                                setIsDetailModalOpen(true);
+                            }}
+                            className="p-1 text-sage-300 hover:text-sage-200 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                            title="View Details"
+                        >
+                            <Eye className="h-4 w-4" />
+                        </button>
+                    </div>
+                ),
+                enableSorting: false,
+                enableColumnFilter: false,
+                maxSize: 120,
+                minSize: 100,
+            },
+        ],
+        []
+    );
 
     if (!hasConnection) {
         return (
@@ -129,13 +282,13 @@ export default function TriggersPage() {
                         Triggers
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400">
-                        View and manage job triggers
+                        Manage job triggers and schedules
                     </p>
                 </div>
                 <button
                     onClick={loadTriggers}
                     disabled={isLoading}
-                    className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+                    className="bg-sage-200 hover:bg-sage-300 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
                 >
                     <RefreshCw className={`h-5 w-5 ${isLoading ? 'animate-spin' : ''}`} />
                     <span>Refresh</span>
@@ -144,199 +297,23 @@ export default function TriggersPage() {
 
             {isLoading ? (
                 <div className="text-center py-12">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-200 mx-auto"></div>
                     <p className="mt-4 text-gray-600 dark:text-gray-400">Loading triggers...</p>
                 </div>
-            ) : triggers.length === 0 ? (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
-                    <Clock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                        No Triggers Found
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                        No triggers are configured in this scheduler
-                    </p>
-                </div>
             ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                    <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead className="bg-gray-50 dark:bg-gray-900">
-                            <tr>
-                                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase w-10">
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                                    Trigger
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                                    Job
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                                    Schedule
-                                </th>
-                                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                                    State
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                                    Fire Times
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            {triggers.map((trigger) => {
-                                const triggerId = `${trigger.triggerGroup}.${trigger.triggerName}`;
-                                const isExpanded = expandedRows.has(triggerId);
-
-                                return (
-                                    <>
-                                        <tr key={triggerId} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                            <td className="px-3 py-3">
-                                                <button
-                                                    onClick={() => toggleRow(triggerId)}
-                                                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-transform"
-                                                    title={isExpanded ? "Collapse" : "Expand"}
-                                                >
-                                                    {isExpanded ? (
-                                                        <ChevronDown className="h-4 w-4" />
-                                                    ) : (
-                                                        <ChevronRight className="h-4 w-4" />
-                                                    )}
-                                                </button>
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                <div className="flex items-center">
-                                                    <Clock className="h-4 w-4 text-purple-600 dark:text-purple-400 mr-2 flex-shrink-0" />
-                                                    <div className="min-w-0">
-                                                        <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                                            {trigger.triggerName}
-                                                        </div>
-                                                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                                                            {trigger.triggerGroup}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                <div className="text-sm text-gray-900 dark:text-white truncate">
-                                                    {trigger.jobName}
-                                                </div>
-                                                <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                                                    {trigger.jobGroup}
-                                                </div>
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                {trigger.cronExpression ? (
-                                                    <div>
-                                                        <div className="text-xs font-mono text-gray-900 dark:text-white">
-                                                            {trigger.cronExpression}
-                                                        </div>
-                                                        <div className="text-xs text-gray-500 dark:text-gray-400">
-                                                            CRON
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                                                        {trigger.triggerType}
-                                                    </div>
-                                                )}
-                                            </td>
-                                            <td className="px-3 py-3 whitespace-nowrap">
-                                                <span className={`px-2 py-1 inline-flex text-xs font-semibold rounded-full ${getStateColor(trigger.triggerState)}`}>
-                                                    {trigger.triggerState}
-                                                </span>
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                <div className="text-xs text-gray-900 dark:text-white">
-                                                    <span className="text-gray-500">Next:</span> {formatFireTime(trigger.nextFireTime)}
-                                                </div>
-                                                <div className="text-xs text-gray-500 dark:text-gray-400">
-                                                    <span>Prev:</span> {formatFireTime(trigger.prevFireTime)}
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        {/* Expanded Detail Row */}
-                                        {isExpanded && (
-                                            <tr key={`${triggerId}-detail`} className="bg-gray-50 dark:bg-gray-900">
-                                                <td colSpan={6} className="px-4 py-4">
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                        {/* Left Column - Information */}
-                                                        <div className="space-y-3">
-                                                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Trigger Details</h4>
-
-                                                            <div className="bg-white dark:bg-gray-800 rounded-lg p-3 space-y-2">
-                                                                <div className="flex justify-between text-xs">
-                                                                    <span className="text-gray-500 dark:text-gray-400">Type:</span>
-                                                                    <span className="font-medium text-gray-900 dark:text-white">{trigger.triggerType}</span>
-                                                                </div>
-                                                                <div className="flex justify-between text-xs">
-                                                                    <span className="text-gray-500 dark:text-gray-400">Priority:</span>
-                                                                    <span className="font-medium text-gray-900 dark:text-white">{trigger.priority}</span>
-                                                                </div>
-                                                                {trigger.cronExpression && (
-                                                                    <div className="flex justify-between text-xs">
-                                                                        <span className="text-gray-500 dark:text-gray-400">Cron:</span>
-                                                                        <span className="font-mono font-medium text-gray-900 dark:text-white">{trigger.cronExpression}</span>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Right Column - Actions */}
-                                                        <div className="space-y-3">
-                                                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Actions</h4>
-
-                                                            <div className="space-y-2">
-                                                                {/* Pause/Resume Button */}
-                                                                {trigger.triggerState === 'PAUSED' ? (
-                                                                    <button
-                                                                        onClick={() => resumeTrigger(trigger.triggerName, trigger.triggerGroup)}
-                                                                        className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium"
-                                                                    >
-                                                                        <Play className="h-4 w-4" />
-                                                                        <span>Resume</span>
-                                                                    </button>
-                                                                ) : (
-                                                                    <button
-                                                                        onClick={() => pauseTrigger(trigger.triggerName, trigger.triggerGroup)}
-                                                                        className="w-full flex items-center justify-center space-x-2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium"
-                                                                    >
-                                                                        <Pause className="h-4 w-4" />
-                                                                        <span>Pause</span>
-                                                                    </button>
-                                                                )}
-
-                                                                {/* Edit Cron Button */}
-                                                                {trigger.cronExpression && (
-                                                                    <button
-                                                                        onClick={() => alert('Cron düzenleme özelliği yakında eklenecek!')}
-                                                                        className="w-full flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium"
-                                                                    >
-                                                                        <Edit className="h-4 w-4" />
-                                                                        <span>Edit Cron</span>
-                                                                    </button>
-                                                                )}
-
-                                                                {/* View Logs Button */}
-                                                                <button
-                                                                    onClick={() => alert('Log görüntüleme özelliği yakında eklenecek!')}
-                                                                    className="w-full flex items-center justify-center space-x-2 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium"
-                                                                >
-                                                                    <FileText className="h-4 w-4" />
-                                                                    <span>Logs</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+                <DataTable
+                    columns={columns}
+                    data={triggers}
+                    searchPlaceholder="Search triggers by name, job, or schedule..."
+                    defaultPageSize={10}
+                />
             )}
+
+            <TriggerDetailModal
+                trigger={selectedTrigger}
+                isOpen={isDetailModalOpen}
+                onClose={() => setIsDetailModalOpen(false)}
+            />
         </div>
     );
 }

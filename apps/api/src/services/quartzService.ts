@@ -407,6 +407,138 @@ export class QuartzService {
 
         return true;
     }
+
+    /**
+     * Get all Quartz tables with row counts
+     */
+    async getQuartzTables(config: DatabaseConnection): Promise<Array<{ name: string; rowCount: number; description: string }>> {
+        const pool = await connectionManager.getPool(config);
+        const prefix = this.getSchemaPrefix(config.schema);
+        const schemaName = config.schema || 'public';
+
+        // Get all tables that start with qrtz_
+        const tablesQuery = `
+            SELECT table_name 
+            FROM information_schema.tables 
+            WHERE table_schema = $1 
+              AND table_name LIKE 'qrtz_%'
+            ORDER BY table_name
+        `;
+
+        const tablesResult = await pool.query(tablesQuery, [schemaName]);
+        const tables = [];
+
+        // Table descriptions
+        const descriptions: Record<string, string> = {
+            'qrtz_job_details': 'Job definitions and configurations',
+            'qrtz_triggers': 'Trigger configurations and schedules',
+            'qrtz_simple_triggers': 'Simple trigger details',
+            'qrtz_cron_triggers': 'Cron expression triggers',
+            'qrtz_simprop_triggers': 'Simple property triggers',
+            'qrtz_blob_triggers': 'Binary large object triggers',
+            'qrtz_fired_triggers': 'Currently executing jobs',
+            'qrtz_calendars': 'Calendar definitions',
+            'qrtz_paused_trigger_grps': 'Paused trigger groups',
+            'qrtz_scheduler_state': 'Scheduler instance states',
+            'qrtz_locks': 'Scheduler locks'
+        };
+
+        for (const row of tablesResult.rows) {
+            const tableName = row.table_name;
+            try {
+                const countQuery = `SELECT COUNT(*) as count FROM ${prefix}${tableName}`;
+                const countResult = await pool.query(countQuery);
+                const rowCount = parseInt(countResult.rows[0].count, 10);
+
+                tables.push({
+                    name: tableName,
+                    rowCount,
+                    description: descriptions[tableName] || 'Quartz table'
+                });
+            } catch (error) {
+                // If count fails, still include the table with 0 count
+                tables.push({
+                    name: tableName,
+                    rowCount: 0,
+                    description: descriptions[tableName] || 'Quartz table'
+                });
+            }
+        }
+
+        return tables;
+    }
+
+    /**
+     * Get paginated table data
+     */
+    async getTableData(
+        config: DatabaseConnection,
+        tableName: string,
+        page: number = 1,
+        pageSize: number = 50
+    ): Promise<{ data: any[]; total: number; page: number; pageSize: number }> {
+        // Validate table name (must start with qrtz_)
+        if (!tableName.startsWith('qrtz_')) {
+            throw new Error('Invalid table name. Only Quartz tables (qrtz_*) are allowed.');
+        }
+
+        const pool = await connectionManager.getPool(config);
+        const prefix = this.getSchemaPrefix(config.schema);
+        const offset = (page - 1) * pageSize;
+
+        // Get total count
+        const countQuery = `SELECT COUNT(*) as count FROM ${prefix}${tableName}`;
+        const countResult = await pool.query(countQuery);
+        const total = parseInt(countResult.rows[0].count, 10);
+
+        // Get paginated data
+        const dataQuery = `SELECT * FROM ${prefix}${tableName} LIMIT $1 OFFSET $2`;
+        const dataResult = await pool.query(dataQuery, [pageSize, offset]);
+
+        return {
+            data: dataResult.rows,
+            total,
+            page,
+            pageSize
+        };
+    }
+
+    /**
+     * Get table column schema information
+     */
+    async getTableSchema(
+        config: DatabaseConnection,
+        tableName: string
+    ): Promise<Array<{ name: string; type: string; nullable: boolean; default: string | null }>> {
+        // Validate table name (must start with qrtz_)
+        if (!tableName.startsWith('qrtz_')) {
+            throw new Error('Invalid table name. Only Quartz tables (qrtz_*) are allowed.');
+        }
+
+        const pool = await connectionManager.getPool(config);
+        const schemaName = config.schema || 'public';
+
+        const query = `
+            SELECT 
+                column_name,
+                data_type,
+                is_nullable,
+                column_default
+            FROM information_schema.columns
+            WHERE table_schema = $1 
+              AND table_name = $2
+            ORDER BY ordinal_position
+        `;
+
+        const result = await pool.query(query, [schemaName, tableName]);
+
+        return result.rows.map((row: any) => ({
+            name: row.column_name,
+            type: row.data_type,
+            nullable: row.is_nullable === 'YES',
+            default: row.column_default
+        }));
+    }
 }
 
 export const quartzService = new QuartzService();

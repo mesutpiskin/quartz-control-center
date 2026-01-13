@@ -89,7 +89,7 @@ export default function SchedulerPage() {
                 <button
                     onClick={loadSchedulerData}
                     disabled={isLoading}
-                    className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+                    className="bg-sage-200 hover:bg-sage-300 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
                 >
                     <RefreshCw className={`h-5 w-5 ${isLoading ? 'animate-spin' : ''}`} />
                     <span>Refresh</span>
@@ -136,14 +136,14 @@ export default function SchedulerPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-6">
                 <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                        <Server className="h-5 w-5 mr-2 text-indigo-600 dark:text-indigo-400" />
+                        <Server className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" />
                         Scheduler Instances
                     </h2>
                 </div>
 
                 {isLoading ? (
                     <div className="p-12 text-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
                         <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
                     </div>
                 ) : schedulerInfo.length === 0 ? (
@@ -163,8 +163,8 @@ export default function SchedulerPage() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center space-x-3 mb-3">
-                                            <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-indigo-100 dark:bg-indigo-900">
-                                                <Server className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                                            <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900">
+                                                <Server className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                                             </div>
                                             <div>
                                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">

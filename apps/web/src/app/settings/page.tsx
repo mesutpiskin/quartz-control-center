@@ -247,13 +247,13 @@ export default function SettingsPage() {
                     </p>
                     <div className="mt-2 flex items-center space-x-2">
                         <span className="text-sm text-gray-500 dark:text-gray-400">Supported:</span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sage-100 text-sage-300 dark:bg-sage-300 dark:text-sage-50">
                             PostgreSQL
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sage-200 text-white dark:bg-sage-200 dark:text-sage-300">
                             SQL Server
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sage-100/80 text-sage-300 dark:bg-sage-300/80 dark:text-sage-50">
                             MySQL
                         </span>
                     </div>
@@ -263,7 +263,7 @@ export default function SettingsPage() {
                     <button
                         onClick={handleExport}
                         disabled={profiles.length === 0}
-                        className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+                        className="bg-sage-200 hover:bg-sage-300 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
                     >
                         <Download className="h-5 w-5" />
                         <span>Export</span>
@@ -271,7 +271,7 @@ export default function SettingsPage() {
 
                     <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+                        className="bg-sage-300 hover:bg-[#6b7868] text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
                     >
                         <Upload className="h-5 w-5" />
                         <span>Import</span>
@@ -286,7 +286,7 @@ export default function SettingsPage() {
 
                     <button
                         onClick={handleNewProfile}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+                        className="bg-sage-200 hover:bg-sage-300 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
                     >
                         <Plus className="h-5 w-5" />
                         <span>New Profile</span>
@@ -305,8 +305,8 @@ export default function SettingsPage() {
                             <div
                                 key={profile.id}
                                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${activeProfile?.id === profile.id
-                                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
-                                    : 'border-gray-200 dark:border-gray-700 hover:border-indigo-300'
+                                    ? 'border-sage-200 bg-sage-50 dark:bg-sage-300/20'
+                                    : 'border-gray-200 dark:border-gray-700 hover:border-sage-200'
                                     }`}
                                 onClick={() => handleProfileSelect(profile.id)}
                             >
@@ -334,7 +334,7 @@ export default function SettingsPage() {
                                     </button>
                                 </div>
                                 {activeProfile?.id === profile.id && (
-                                    <div className="flex items-center text-xs text-indigo-600 dark:text-indigo-400 mt-2">
+                                    <div className="flex items-center text-xs text-sage-300 dark:text-sage-100 mt-2">
                                         <CheckCircle className="h-3 w-3 mr-1" />
                                         Active
                                     </div>
@@ -504,7 +504,7 @@ export default function SettingsPage() {
                     <button
                         onClick={testConnection}
                         disabled={isTestingConnection}
-                        className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                        className="flex-1 bg-sage-200 hover:bg-sage-300 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
                     >
                         <TestTube className="h-5 w-5" />
                         <span>{isTestingConnection ? 'Testing...' : 'Test Connection'}</span>
@@ -513,7 +513,7 @@ export default function SettingsPage() {
                     <button
                         onClick={saveProfile}
                         disabled={isSaving || !testResult?.success || !profileName.trim()}
-                        className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                        className="flex-1 bg-sage-300 hover:bg-[#6b7868] disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
                     >
                         <Save className="h-5 w-5" />
                         <span>{isSaving ? 'Saving...' : (editingProfileId ? 'Update Profile' : 'Save Profile')}</span>

@@ -22,6 +22,7 @@ const navigation = [
     { name: 'Triggers', href: '/triggers', icon: Clock },
     { name: 'Executing', href: '/executing', icon: Play },
     { name: 'Scheduler Info', href: '/scheduler', icon: Activity },
+    { name: 'Data View', href: '/database', icon: Database },
     { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
@@ -47,10 +48,10 @@ export function Sidebar() {
     return (
         <div className="hidden md:flex md:flex-shrink-0">
             <div className={`flex flex-col transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
-                <div className="flex flex-col flex-grow bg-gradient-to-b from-indigo-900 to-indigo-800 pt-5 pb-4 overflow-y-auto shadow-xl">
+                <div className="flex flex-col flex-grow bg-gradient-to-b from-sage-300 to-[#5a6858] pt-5 pb-4 overflow-y-auto shadow-xl">
                     <div className="flex items-center flex-shrink-0 px-4 mb-8 justify-between">
                         <div className="flex items-center">
-                            <Database className="h-8 w-8 text-indigo-300" />
+                            <Database className="h-8 w-8 text-sage-50" />
                             {!isCollapsed && (
                                 <h1 className="ml-3 text-xl font-bold text-white whitespace-nowrap">
                                     Quartz Control
@@ -59,7 +60,7 @@ export function Sidebar() {
                         </div>
                         <button
                             onClick={toggleCollapse}
-                            className="text-indigo-300 hover:text-white transition-colors p-1 rounded hover:bg-indigo-700/50"
+                            className="text-sage-100 hover:text-white transition-colors p-1 rounded hover:bg-sage-300/30"
                             title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                         >
                             {isCollapsed ? (
@@ -81,14 +82,14 @@ export function Sidebar() {
                                     className={`
                     group flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-4'} py-3 text-sm font-medium rounded-lg transition-all duration-200
                     ${isActive
-                                            ? 'bg-indigo-700 text-white shadow-md'
-                                            : 'text-indigo-100 hover:bg-indigo-700/50 hover:text-white'
+                                            ? 'bg-sage-200 text-sage-300 shadow-md'
+                                            : 'text-sage-50 hover:bg-sage-300/30 hover:text-white'
                                         }
                   `}
                                     title={isCollapsed ? item.name : undefined}
                                 >
                                     <Icon
-                                        className={`${isCollapsed ? '' : 'mr-3'} h-5 w-5 ${isActive ? 'text-white' : 'text-indigo-300'
+                                        className={`${isCollapsed ? '' : 'mr-3'} h-5 w-5 ${isActive ? 'text-sage-300' : 'text-sage-100'
                                             }`}
                                     />
                                     {!isCollapsed && item.name}
@@ -96,12 +97,12 @@ export function Sidebar() {
                             );
                         })}
                     </nav>
-                    <div className="flex-shrink-0 px-4 py-4 border-t border-indigo-700">
+                    <div className="flex-shrink-0 px-4 py-4 border-t border-sage-300/30">
                         <a
                             href="https://github.com/mesutpiskin/quartz-control-center"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`flex items-center ${isCollapsed ? 'justify-center' : ''} text-xs text-indigo-300 hover:text-white transition-colors`}
+                            className={`flex items-center ${isCollapsed ? 'justify-center' : ''} text-xs text-sage-100 hover:text-white transition-colors`}
                             title={isCollapsed ? 'View on GitHub' : undefined}
                         >
                             <Github className={`h-4 w-4 ${isCollapsed ? '' : 'mr-2'}`} />

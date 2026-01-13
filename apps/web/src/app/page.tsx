@@ -58,7 +58,7 @@ export default function HomePage() {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-200 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
@@ -154,13 +154,13 @@ export default function HomePage() {
         </div>
       )}
 
-      <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
+      <div className="bg-gradient-to-br from-sage-200 to-sage-300 rounded-2xl shadow-xl p-8 text-white">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h2 className="text-2xl font-bold mb-3">
               Getting Started
             </h2>
-            <p className="text-indigo-100 mb-6 max-w-2xl">
+            <p className="text-sage-50 mb-6 max-w-2xl">
               Connect to your existing Quartz database and start managing your scheduled jobs.
               The control center provides a comprehensive view of all your jobs, triggers, and execution history.
             </p>
@@ -196,7 +196,7 @@ function DashboardCard({
   const colorClasses = {
     blue: 'from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700',
     purple: 'from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700',
-    green: 'from-green-500 to-green-600 hover:from-green-600 hover:to-green-700',
+    green: 'from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700',
     orange: 'from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700',
   }[color];
 
@@ -218,7 +218,7 @@ function FeatureItem({ text }: { text: string }) {
   return (
     <div className="flex items-center space-x-2">
       <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
-      <span className="text-indigo-100">{text}</span>
+      <span className="text-sage-50">{text}</span>
     </div>
   );
 }
@@ -240,7 +240,7 @@ function StatCard({
 }) {
   const colorClasses = {
     blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400',
-    green: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-600 dark:text-green-400',
+    green: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400',
     purple: 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400',
     orange: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800 text-orange-600 dark:text-orange-400',
     indigo: 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400',

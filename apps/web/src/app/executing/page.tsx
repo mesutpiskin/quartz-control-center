@@ -106,7 +106,7 @@ export default function ExecutingPage() {
                     <button
                         onClick={loadExecutingJobs}
                         disabled={isLoading}
-                        className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+                        className="bg-sage-200 hover:bg-sage-300 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
                     >
                         <RefreshCw className={`h-5 w-5 ${isLoading ? 'animate-spin' : ''}`} />
                         <span>Refresh</span>
@@ -125,70 +125,92 @@ export default function ExecutingPage() {
                     </p>
                 </div>
             ) : (
-                <div className="space-y-4">
-                    {executingJobs.map((job) => (
-                        <div
-                            key={job.entryId}
-                            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-l-4 border-green-500"
-                        >
-                            <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                    <div className="flex items-center space-x-3 mb-3">
-                                        <div className="relative">
-                                            <Play className="h-6 w-6 text-green-600 dark:text-green-400" />
-                                            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                                {job.jobName}
-                                            </h3>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                {job.jobGroup}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                                        <div>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Trigger</p>
-                                            <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                                {job.triggerName}
-                                            </p>
-                                            <p className="text-xs text-gray-600 dark:text-gray-400">
-                                                {job.triggerGroup}
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Instance</p>
-                                            <p className="text-sm font-medium text-gray-900 dark:text-white font-mono">
-                                                {job.instanceName}
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Running Time</p>
-                                            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <div className="overflow-x-auto relative">
+                        {/* Scroll indicator shadow */}
+                        <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-gray-200 dark:from-gray-700 to-transparent pointer-events-none z-10"></div>
+                        
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead className="bg-gray-50 dark:bg-gray-900">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
+                                        Job
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[250px]">
+                                        Class
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[150px]">
+                                        Fire Time
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[150px]">
+                                        Trigger
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[150px]">
+                                        Instance
+                                    </th>
+                                    <th className="sticky right-0 bg-gray-50 dark:bg-gray-900 px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider shadow-[-4px_0_6px_-2px_rgba(0,0,0,0.1)] min-w-[100px]">
+                                        Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                                {executingJobs.map((job) => (
+                                    <tr key={job.entryId}>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="flex items-center">
+                                                <div className="relative mr-3">
+                                                    <Play className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                                    <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                                        {job.jobName}
+                                                    </div>
+                                                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                        {job.jobGroup}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-sm text-gray-900 dark:text-white">
+                                                {/* Assuming job class is not directly available in ExecutingJob,
+                                                    or needs to be derived. For now, placeholder or empty. */}
+                                                N/A
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-sm text-gray-900 dark:text-white">
                                                 {formatDuration(job.firedTime)}
-                                            </p>
-                                            <p className="text-xs text-gray-600 dark:text-gray-400">
-                                                Started: {new Date(job.firedTime).toLocaleTimeString()}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="ml-6">
-                                    <span className="px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                        {job.state}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                                            </div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                {new Date(job.firedTime).toLocaleTimeString()}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-sm text-gray-900 dark:text-white">
+                                                {job.triggerName}
+                                            </div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                {job.triggerGroup}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 font-mono">
+                                            {job.instanceName}
+                                        </td>
+                                        <td className="sticky right-0 bg-white dark:bg-gray-800 px-6 py-4 text-center shadow-[-4px_0_6px_-2px_rgba(0,0,0,0.1)]">
+                                            <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 animate-pulse">
+                                                Running
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
 
