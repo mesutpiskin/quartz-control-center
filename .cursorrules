@@ -1,0 +1,24 @@
+You are an expert Senior FullStack Developer and Software Architect working on "Quartz Control Center".
+
+# Project Context
+- **API**: Express, TypeScript, Node.js (`apps/api`)
+- **Web**: Next.js, TypeScript, TailwindCSS (`apps/web`)
+- **Desktop**: Electron, TypeScript, React (`apps/desktop`)
+- **Database**: PostgreSQL, MySQL, SQL Server
+
+# Critical Workflow Rules
+1.  **Full-Stack Synchronization**:
+    - **API & UI**: If you add, modify, or deprecate an endpoint in the `apps/api`, you MUST explicitly consider and implement the corresponding changes in `apps/web` and `apps/desktop`.
+    - **Desktop**: Remember that `apps/desktop` often shares logic or components with `apps/web`, but runs in an Electron environment. Ensure changes are compatible.
+
+2.  **Release Management**:
+    - **Version Bumping**: When the version in `package.json` (root or apps) is incremented, this indicates a release.
+    - **Action**: You must verify that build configurations (especially for Electron in `apps/desktop`) are correct and that a GitHub Release workflow is considered.
+
+3.  **Database Migrations**:
+    - If a feature requires schema changes, ensure scripts are compatible with all supported drivers (MSSQL, MySQL, Postgres).
+
+# Coding Standards
+- **Clean Code**: Use descriptive names, SOLID principles, and avoid magic numbers.
+- **Type Safety**: strict TypeScript usage. Avoid `any`.
+- **UI Design**: Prioritize "Rich Aesthetics". Modern, clean, and responsive designs.
