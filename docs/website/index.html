@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title>Quartz Control Center - Enterprise Scheduler Management Dashboard</title>
+    <meta name="title" content="Quartz Control Center - Enterprise Scheduler Management Dashboard">
+    <meta name="description" content="A powerful, standalone management interface for Quartz Scheduler. Monitor jobs, triggers, and executions in real-time. Available for macOS, Windows, and Docker.">
+    <meta name="keywords" content="quartz scheduler, job scheduler, task management, cron jobs, enterprise scheduler, java scheduler, spring scheduler, quartz dashboard">
+    <meta name="author" content="Mesut Piskin">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mesutpiskin.github.io/quartz-control-center/">
+    <meta property="og:title" content="Quartz Control Center - Enterprise Scheduler Management">
+    <meta property="og:description" content="A powerful, standalone management interface for Quartz Scheduler. Monitor jobs, triggers, and executions in real-time.">
+    <meta property="og:image" content="https://mesutpiskin.github.io/quartz-control-center/assets/screenshot.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mesutpiskin.github.io/quartz-control-center/">
+    <meta property="twitter:title" content="Quartz Control Center - Enterprise Scheduler Management">
+    <meta property="twitter:description" content="A powerful, standalone management interface for Quartz Scheduler. Monitor jobs, triggers, and executions in real-time.">
+    <meta property="twitter:image" content="https://mesutpiskin.github.io/quartz-control-center/assets/screenshot.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Quartz Control Center",
+        "operatingSystem": "macOS, Windows",
+        "applicationCategory": "DeveloperApplication",
+        "description": "Enterprise-grade management interface for Quartz Scheduler. Monitor and control your scheduled jobs in real-time.",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Mesut Piskin",
+            "url": "https://github.com/mesutpiskin"
+        },
+        "downloadUrl": "https://github.com/mesutpiskin/quartz-control-center/releases/latest",
+        "softwareVersion": "1.0.0",
+        "screenshot": "https://mesutpiskin.github.io/quartz-control-center/assets/screenshot.png"
+    }
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="#" class="logo">
+                <img src="assets/logo.png" alt="Quartz Control Center Logo" width="40" height="40">
+                <div class="logo-text">
+                    <span class="logo-title">Quartz Control Center</span>
+                    <span class="logo-slogan">Universal Quartz Admin UI</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#screenshot">Preview</a>
+                <a href="#download">Download</a>
+                <a href="https://github.com/mesutpiskin/quartz-control-center" target="_blank" rel="noopener" class="github-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Open Source & Free
+            </div>
+            <h1>Take Control of Your<br><span class="gradient-text">Quartz Scheduler</span></h1>
+            <p class="hero-description">
+                Enterprise-grade management interface for Quartz Scheduler. Monitor jobs, triggers, 
+                and executions in real-time. No more digging through logs or database queries.
+            </p>
+            <div class="hero-cta">
+                <a href="#download" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download Now
+                </a>
+                <a href="https://github.com/mesutpiskin/quartz-control-center" target="_blank" rel="noopener" class="btn btn-secondary">
+                    View on GitHub
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-icon">🖥️</span>
+                    <span class="stat-text">Desktop App</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">🐳</span>
+                    <span class="stat-text">Docker Ready</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">🗄️</span>
+                    <span class="stat-text">Multi-Database</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Powerful Features</h2>
+                <p>Everything you need to manage your Quartz Scheduler environment</p>
+            </div>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon-blue">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    </div>
+                    <h3>Job Management</h3>
+                    <p>View, pause, resume, and trigger your scheduled jobs. See job details, execution history, and next fire times at a glance.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon-green">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3>Trigger Control</h3>
+                    <p>Manage CRON expressions and schedules. Pause, resume, or immediately fire triggers with intuitive controls.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon-orange">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    </div>
+                    <h3>Real-time Monitoring</h3>
+                    <p>Watch currently executing jobs in real-time. Monitor system load and identify bottlenecks instantly.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon-purple">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                    </div>
+                    <h3>Multi-Database Support</h3>
+                    <p>Native support for PostgreSQL, Microsoft SQL Server, and MySQL. Connect to your existing Quartz persistence layer.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon-teal">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <h3>Desktop & Web</h3>
+                    <p>Run as a native desktop application on macOS and Windows, or deploy as a containerized web service with Docker.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon-pink">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Your data stays with you. Connect directly to your database without any third-party services or cloud dependencies.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshot Section -->
+    <section id="screenshot" class="screenshot-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>See It In Action</h2>
+                <p>Explore the powerful features through our modern, intuitive interface</p>
+            </div>
+            
+            <!-- Gallery Tabs -->
+            <div class="gallery-tabs">
+                <button class="gallery-tab active" data-tab="dashboard">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    Dashboard
+                </button>
+                <button class="gallery-tab" data-tab="jobs">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    Jobs
+                </button>
+                <button class="gallery-tab" data-tab="triggers">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Triggers
+                </button>
+                <button class="gallery-tab" data-tab="executing">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Executing
+                </button>
+                <button class="gallery-tab" data-tab="scheduler">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
+                    Scheduler Info
+                </button>
+                <button class="gallery-tab" data-tab="dataview">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                    Data View
+                </button>
+            </div>
+            
+            <!-- Gallery Content -->
+            <div class="gallery-content">
+                <div class="gallery-item active" id="gallery-dashboard">
+                    <div class="screenshot-frame">
+                        <div class="screenshot-header">
+                            <div class="screenshot-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="screenshot-title">Quartz Control Center — Dashboard</div>
+                            <div class="screenshot-actions"></div>
+                        </div>
+                        <img src="assets/quartz_dashboard.png" alt="Quartz Control Center Dashboard - Overview of jobs, triggers, and system metrics" class="screenshot-img" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Centralized Dashboard</h3>
+                        <p>Get a bird's-eye view of your entire scheduler environment. Monitor total jobs, running jobs, triggers, and scheduler instances at a glance.</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" id="gallery-jobs">
+                    <div class="screenshot-frame">
+                        <div class="screenshot-header">
+                            <div class="screenshot-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="screenshot-title">Quartz Control Center — Jobs</div>
+                            <div class="screenshot-actions"></div>
+                        </div>
+                        <img src="assets/quartz_jobs.png" alt="Quartz Control Center Jobs List - View and manage scheduled jobs" class="screenshot-img" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Job Management</h3>
+                        <p>View all your scheduled jobs in one place. Search, filter, and manage jobs with powerful controls. See job properties and configurations.</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" id="gallery-triggers">
+                    <div class="screenshot-frame">
+                        <div class="screenshot-header">
+                            <div class="screenshot-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="screenshot-title">Quartz Control Center — Triggers</div>
+                            <div class="screenshot-actions"></div>
+                        </div>
+                        <img src="assets/quartz_job.png" alt="Quartz Control Center Triggers - View and manage job triggers" class="screenshot-img" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Trigger Management</h3>
+                        <p>Manage CRON expressions and schedules. View trigger details, pause, resume, or immediately fire triggers with intuitive controls.</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" id="gallery-executing">
+                    <div class="screenshot-frame">
+                        <div class="screenshot-header">
+                            <div class="screenshot-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="screenshot-title">Quartz Control Center — Executing Jobs</div>
+                            <div class="screenshot-actions"></div>
+                        </div>
+                        <img src="assets/quartz_executing_jobs.png" alt="Quartz Control Center Executing Jobs - Real-time view of currently running jobs" class="screenshot-img" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Real-time Execution Monitoring</h3>
+                        <p>Watch jobs execute in real-time with auto-refresh. See fire times, trigger details, and running instances across your cluster.</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" id="gallery-scheduler">
+                    <div class="screenshot-frame">
+                        <div class="screenshot-header">
+                            <div class="screenshot-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="screenshot-title">Quartz Control Center — Scheduler Information</div>
+                            <div class="screenshot-actions"></div>
+                        </div>
+                        <img src="assets/quartz_scheduler_information.png" alt="Quartz Control Center Scheduler Info - Cluster instances and statistics" class="screenshot-img" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Cluster Overview</h3>
+                        <p>Monitor your scheduler cluster health. View all instances, their status, check-in times, and comprehensive statistics.</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" id="gallery-dataview">
+                    <div class="screenshot-frame">
+                        <div class="screenshot-header">
+                            <div class="screenshot-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="screenshot-title">Quartz Control Center — Data View</div>
+                            <div class="screenshot-actions"></div>
+                        </div>
+                        <img src="assets/quartz_data_view.png" alt="Quartz Control Center Data View - Browse Quartz database tables" class="screenshot-img" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Database Explorer</h3>
+                        <p>Browse Quartz database tables directly. Inspect triggers, calendars, job details, locks, and scheduler state without SQL queries.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built with Modern Tech</h2>
+                <p>Powered by industry-leading technologies</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-logo">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.25 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.879.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747-.652-4.506-3.859-8.292-8.208-9.695a12.597 12.597 0 0 0-2.499-.523A33.119 33.119 0 0 0 11.572 0zm4.069 7.217c.347 0 .408.005.486.047a.473.473 0 0 1 .237.277c.018.06.023 1.365.018 4.304l-.006 4.218-.744-1.14-.746-1.14v-3.066c0-1.982.01-3.097.023-3.15a.478.478 0 0 1 .233-.296c.096-.05.13-.054.5-.054z"/></svg>
+                    </div>
+                    <span>Next.js 14</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-logo">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/></svg>
+                    </div>
+                    <span>TypeScript</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-logo">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/></svg>
+                    </div>
+                    <span>Tailwind CSS</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-logo">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                    </div>
+                    <span>Express.js</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-logo">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M1.667 1.667v20.666h20.666V1.667H1.667zm13.541 17.212c-.462.546-1.238.879-2.085.879-1.547 0-2.603-.854-2.603-2.185 0-.785.334-1.417.946-1.863.612-.447 1.463-.692 2.503-.692.355 0 .73.044 1.096.1v-.213c0-.76-.405-1.14-1.218-1.14-.583 0-1.254.174-2.003.521l-.521-1.521c.898-.428 1.825-.642 2.778-.642.92 0 1.631.213 2.134.64.502.426.752 1.056.752 1.89v3.375c0 .475.138.712.415.712.139 0 .278-.044.416-.13l.347 1.185c-.416.373-.947.56-1.593.56-.69 0-1.153-.278-1.364-.876zm-.52-2.795c-.336-.07-.652-.103-.946-.103-.548 0-.976.105-1.284.315a.952.952 0 0 0-.461.835c0 .543.36.854.99.854.497 0 .92-.165 1.268-.494.231-.22.354-.483.433-.798v-.61z"/></svg>
+                    </div>
+                    <span>Electron</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Download Now</h2>
+                <p>Get started in seconds with our native desktop applications</p>
+            </div>
+            <div class="download-grid">
+                <a href="https://github.com/mesutpiskin/quartz-control-center/releases/latest" class="download-card" target="_blank" rel="noopener">
+                    <div class="download-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    </div>
+                    <h3>macOS</h3>
+                    <p>Apple Silicon & Intel</p>
+                    <span class="download-badge">DMG Installer</span>
+                </a>
+                <a href="https://github.com/mesutpiskin/quartz-control-center/releases/latest" class="download-card" target="_blank" rel="noopener">
+                    <div class="download-icon download-icon-windows">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                    </div>
+                    <h3>Windows</h3>
+                    <p>x64 & ARM64</p>
+                    <span class="download-badge">EXE Installer</span>
+                </a>
+                <a href="https://github.com/mesutpiskin/quartz-control-center#docker" class="download-card download-card-docker" target="_blank" rel="noopener">
+                    <div class="download-icon download-icon-docker">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.186m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288z"/></svg>
+                    </div>
+                    <h3>Docker</h3>
+                    <p>Containerized Deployment</p>
+                    <span class="download-badge">docker-compose</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Take Control?</h2>
+                <p>Join developers who manage their Quartz Scheduler with ease</p>
+                <div class="cta-buttons">
+                    <a href="https://github.com/mesutpiskin/quartz-control-center" target="_blank" rel="noopener" class="btn btn-primary btn-large">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        Star on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="assets/logo.png" alt="Quartz Control Center" width="32" height="32">
+                    <span>Quartz Control Center</span>
+                </div>
+                <p class="footer-text">
+                    Open source project by <a href="https://github.com/mesutpiskin" target="_blank" rel="noopener">Mesut Piskin</a>
+                </p>
+                <p class="footer-thanks">
+                    Special thanks to <a href="https://github.com/quartz-scheduler/quartz" target="_blank" rel="noopener">Quartz Scheduler</a>
+                </p>
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/mesutpiskin/quartz-control-center" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/mesutpiskin/quartz-control-center/releases" target="_blank" rel="noopener">Releases</a>
+                <a href="https://github.com/mesutpiskin/quartz-control-center/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.querySelector('.nav-links').classList.remove('active');
+                    document.querySelector('.mobile-menu-btn').classList.remove('active');
+                }
+            });
+        });
+
+        // Gallery Tab Switching
+        const galleryTabs = document.querySelectorAll('.gallery-tab');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        galleryTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetTab = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs
+                galleryTabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all gallery items
+                galleryItems.forEach(item => item.classList.remove('active'));
+                // Show target gallery item
+                const targetItem = document.getElementById('gallery-' + targetTab);
+                if (targetItem) {
+                    targetItem.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
